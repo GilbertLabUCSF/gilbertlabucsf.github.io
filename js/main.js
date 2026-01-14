@@ -384,6 +384,39 @@ function initNavigation() {
 }
 
 // ============================================
+// MOBILE MENU
+// ============================================
+function initMobileMenu() {
+  const toggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  if (!toggle || !navLinks) return;
+
+  toggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    toggle.classList.toggle('active', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen);
+  });
+
+  // Close menu when clicking a link
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      toggle.classList.remove('active');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!nav.contains(e.target) && navLinks.classList.contains('open')) {
+      navLinks.classList.remove('open');
+      toggle.classList.remove('active');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+// ============================================
 // SCROLL ANIMATIONS
 // ============================================
 function initScrollAnimations() {
@@ -497,6 +530,7 @@ function initEventsCarousel() {
 document.addEventListener('DOMContentLoaded', () => {
   initDNABackground();
   initNavigation();
+  initMobileMenu();
   initScrollAnimations();
   initSmoothScroll();
   initEventsCarousel();

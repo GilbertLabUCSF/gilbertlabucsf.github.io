@@ -7,6 +7,20 @@
   <meta name="description" content="CRISPR epigenome engineering, functional genomics, and cancer biology research at UCSF and Arc Institute">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Gilbert Lab | UCSF & Arc Institute">
+  <meta property="og:description" content="CRISPR epigenome engineering, functional genomics, and cancer biology research at UCSF and Arc Institute">
+  <meta property="og:url" content="https://gilbertlab.ucsf.edu">
+  <meta property="og:image" content="https://gilbertlab.ucsf.edu/images/og-image.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@GilbertLabUCSF">
+  <meta name="twitter:title" content="Gilbert Lab | UCSF & Arc Institute">
+  <meta name="twitter:description" content="CRISPR epigenome engineering, functional genomics, and cancer biology research">
+  <meta name="twitter:image" content="https://gilbertlab.ucsf.edu/images/og-image.jpg">
+
   <!-- Fonts - IBM Plex -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,9 +28,6 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
-
-  <!-- Markdown Parser -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
@@ -24,7 +35,12 @@
   <nav id="nav">
     <div class="nav-inner">
       <a href="#" class="logo">Gilbert Lab</a>
-      <ul class="nav-links">
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
         <li><a href="#research" class="link-underline">Research</a></li>
         <li><a href="#team" class="link-underline">Team</a></li>
         <li><a href="#publications" class="link-underline">Publications</a></li>
@@ -123,16 +139,17 @@
           <div class="research-card-head">
             <div class="research-icon" aria-hidden="true">
               <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="24" cy="24" r="10"/>
-                <path d="M24 10v-4"/>
-                <path d="M24 42v-4"/>
-                <path d="M10 24h-4"/>
-                <path d="M42 24h-4"/>
+                <rect x="8" y="14" width="10" height="20" rx="2"/>
+                <rect x="19" y="10" width="10" height="28" rx="2"/>
+                <rect x="30" y="18" width="10" height="12" rx="2"/>
+                <path d="M13 8v4"/>
+                <path d="M24 4v4"/>
+                <path d="M35 12v4"/>
               </svg>
             </div>
-            <h3>Virology / Gene Therapy</h3>
+            <h3>COMET / Effector Discovery</h3>
           </div>
-          <p>New and improved viral delivery methods to increase efficacy.</p>
+          <p>High-throughput screening of combinatorial dCas9 effector fusions to discover transcriptional modulators and map domain interactions.</p>
         </div>
         <div class="research-card">
           <div class="research-card-head">
@@ -356,7 +373,7 @@
               <div class="event-card-overlay">
                 <div class="event-card-date">Jul 18, 2024</div>
                 <div class="event-card-title">Lab Outing 2024</div>
-                <div class="event-card-desc">Summer lab gathering</div>
+                <div class="event-card-desc">Summer lab gathering</div> 
               </div>
             </article>
             <article class="event-card event-slide">
@@ -454,14 +471,14 @@
       <div class="alumni-grid fade-in" id="alumni-grid">
         <div class="alumni-item">
           <div class="alumni-name">Aidan Winters</div>
-          <div class="alumni-meta">Scientist II, Nepture Bio</div>
+          <div class="alumni-meta">Scientist II, Neptune Bio</div>
         </div>
         <div class="alumni-item">
           <div class="alumni-name">Alex Ge</div>
           <div class="alumni-meta">2017-2019 · Medical Student, UCSF</div>
         </div>
         <div class="alumni-item">
-          <div class="alumni-name">Amanda Mok</div>
+          <div class="alumni-name">Amanda Chung</div>
           <div class="alumni-meta">2019-2023 · Editas Medicine</div>
         </div>
         <div class="alumni-item">
