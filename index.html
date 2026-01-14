@@ -58,18 +58,58 @@
       <div class="research-grid fade-in" id="research-grid">
         <!-- Content loaded from content/research.md or hardcoded below -->
         <div class="research-card">
+          <div class="research-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 6c8 6 8 30 0 36"/>
+              <path d="M32 6c-8 6-8 30 0 36"/>
+              <path d="M19 14h10"/>
+              <path d="M19 22h10"/>
+              <path d="M19 30h10"/>
+            </svg>
+          </div>
           <h3>Epigenome Engineering</h3>
           <p>CRISPRi, CRISPRa, and CRISPRoff for programmable control of gene expression without cutting DNA.</p>
         </div>
         <div class="research-card">
+          <div class="research-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="36" cy="12" r="4"/>
+              <circle cx="24" cy="28" r="4"/>
+              <circle cx="12" cy="36" r="4"/>
+              <circle cx="36" cy="36" r="4"/>
+              <path d="M16 12h16"/>
+              <path d="M24 16v8"/>
+              <path d="M14 34l6-4"/>
+              <path d="M34 34l-6-4"/>
+            </svg>
+          </div>
           <h3>Functional Genomics</h3>
           <p>Genome-scale screens to map genetic interactions and identify synthetic lethal targets in cancer.</p>
         </div>
         <div class="research-card">
+          <div class="research-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M24 6l14 6v9c0 10-6 16-14 21-8-5-14-11-14-21v-9l14-6z"/>
+              <path d="M20 22l4 6 6-10"/>
+            </svg>
+          </div>
           <h3>Drug Resistance</h3>
           <p>Modeling therapy response in prostate cancer, AML, glioblastoma, and lung cancer.</p>
         </div>
         <div class="research-card">
+          <div class="research-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="24" r="4"/>
+              <circle cx="24" cy="12" r="4"/>
+              <circle cx="36" cy="24" r="4"/>
+              <circle cx="24" cy="36" r="4"/>
+              <path d="M15 21l6-6"/>
+              <path d="M27 15l6 6"/>
+              <path d="M33 27l-6 6"/>
+              <path d="M21 33l-6-6"/>
+            </svg>
+          </div>
           <h3>Combinatorial Perturbations</h3>
           <p>Engineered Cas12a for multiplexed chromatin editing and higher-order genetic interactions.</p>
         </div>
@@ -407,46 +447,48 @@
         <h2>Where Are They Now</h2>
       </div>
 
-      <div class="alumni-grid fade-in" id="alumni-grid">
-        <div class="alumni-item">
-          <div class="alumni-name">Amanda Mok</div>
-          <div class="alumni-years">2019-2023</div>
-          <div class="alumni-current">Editas Medicine</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Tom O'Loughlin</div>
-          <div class="alumni-years">2019-2022</div>
-          <div class="alumni-current">Assistant Professor, Mount Sinai</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Sara Misiukiewicz</div>
-          <div class="alumni-years">2020-2022</div>
-          <div class="alumni-current">Graduate Student, UCSF</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Greg Pommier</div>
-          <div class="alumni-years">2020-2022</div>
-          <div class="alumni-current">Medical Student, Johns Hopkins</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Shaheen Kabir</div>
-          <div class="alumni-years">2018-2021</div>
-          <div class="alumni-current">Graphite Bio</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Lilly Scheibe</div>
-          <div class="alumni-years">2019-2021</div>
-          <div class="alumni-current">Harvard Medical School</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Chris Yogodzinski</div>
-          <div class="alumni-years">2018-2020</div>
-          <div class="alumni-current">Graduate Student, UNC</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Alex Ge</div>
-          <div class="alumni-years">2017-2019</div>
-          <div class="alumni-current">Medical Student, UCSF</div>
+      <div class="alumni-marquee fade-in" data-marquee>
+        <div class="alumni-track" data-marquee-track>
+          <div class="alumni-item">
+            <div class="alumni-name">Amanda Mok</div>
+            <div class="alumni-years">2019-2023</div>
+            <div class="alumni-current">Editas Medicine</div>
+          </div>
+          <div class="alumni-item">
+            <div class="alumni-name">Tom O'Loughlin</div>
+            <div class="alumni-years">2019-2022</div>
+            <div class="alumni-current">Assistant Professor, Mount Sinai</div>
+          </div>
+          <div class="alumni-item">
+            <div class="alumni-name">Sara Misiukiewicz</div>
+            <div class="alumni-years">2020-2022</div>
+            <div class="alumni-current">Graduate Student, UCSF</div>
+          </div>
+          <div class="alumni-item">
+            <div class="alumni-name">Greg Pommier</div>
+            <div class="alumni-years">2020-2022</div>
+            <div class="alumni-current">Medical Student, Johns Hopkins</div>
+          </div>
+          <div class="alumni-item">
+            <div class="alumni-name">Shaheen Kabir</div>
+            <div class="alumni-years">2018-2021</div>
+            <div class="alumni-current">Graphite Bio</div>
+          </div>
+          <div class="alumni-item">
+            <div class="alumni-name">Lilly Scheibe</div>
+            <div class="alumni-years">2019-2021</div>
+            <div class="alumni-current">Harvard Medical School</div>
+          </div>
+          <div class="alumni-item">
+            <div class="alumni-name">Chris Yogodzinski</div>
+            <div class="alumni-years">2018-2020</div>
+            <div class="alumni-current">Graduate Student, UNC</div>
+          </div>
+          <div class="alumni-item">
+            <div class="alumni-name">Alex Ge</div>
+            <div class="alumni-years">2017-2019</div>
+            <div class="alumni-current">Medical Student, UCSF</div>
+          </div>
         </div>
       </div>
     </div>
