@@ -17,12 +17,15 @@ function initDNABackground() {
   container.appendChild(canvas);
 
   // Sizing
+  const maxDpr = 2;
+  const getDpr = () => Math.min(window.devicePixelRatio || 1, maxDpr);
   function resize() {
-    canvas.width = container.offsetWidth * window.devicePixelRatio;
-    canvas.height = container.offsetHeight * window.devicePixelRatio;
+    const dpr = getDpr();
+    canvas.width = Math.round(container.offsetWidth * dpr);
+    canvas.height = Math.round(container.offsetHeight * dpr);
     canvas.style.width = '100%';
     canvas.style.height = '100%';
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();
   window.addEventListener('resize', resize);
@@ -123,6 +126,24 @@ function initDNABackground() {
   let mutations = [];
 
   // Animation
+  let rafId = null;
+  let isRunning = false;
+  let isVisible = true;
+  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+  function start() {
+    if (isRunning || prefersReducedMotion || !isVisible) return;
+    isRunning = true;
+    rafId = requestAnimationFrame(animate);
+  }
+
+  function stop() {
+    if (!isRunning) return;
+    isRunning = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+
   function animate(now) {
     const w = width();
     const h = height();
@@ -325,11 +346,27 @@ function initDNABackground() {
       }
     }
 
-    requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
   }
 
-  if (!window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
-    requestAnimationFrame(animate);
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) start();
+        else stop();
+      });
+    }, { threshold: 0.1 });
+    observer.observe(container);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop();
+    else start();
+  });
+
+  if (!prefersReducedMotion) {
+    start();
   }
 }
 

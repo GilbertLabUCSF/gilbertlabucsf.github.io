@@ -124,23 +124,34 @@ nav.visible {
   padding: 4px 0;
 }
 
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--black);
-  transition: width 0.3s var(--ease-out-expo);
-}
-
 .nav-links a:hover {
   color: var(--black);
 }
 
-.nav-links a:hover::after {
+/* Shared link underline treatment */
+.link-underline {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
   width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0.5;
+  transition: transform 0.3s var(--ease-out-expo), opacity 0.3s var(--ease-out-expo);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  opacity: 1;
 }
 
 /* Hero Section - Clean, minimal */
@@ -152,13 +163,41 @@ nav.visible {
   align-items: center;
   position: relative;
   overflow: hidden;
-  background: var(--white);
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(22, 163, 74, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 90% 5%, rgba(16, 185, 129, 0.07), transparent 55%),
+    var(--white);
 }
 
 .hero-bg {
   position: absolute;
   inset: 0;
   overflow: hidden;
+}
+
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(600px 400px at 50% 20%, rgba(15, 118, 110, 0.08), transparent 60%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(17, 17, 17, 0.04) 1px, transparent 0);
+  background-size: 3px 3px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.hero-bg canvas {
+  position: relative;
+  z-index: 1;
+  display: block;
 }
 
 .hero-bg svg {
@@ -192,9 +231,10 @@ nav.visible {
 
 .hero-sub {
   font-family: var(--font-mono);
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  font-weight: 500;
   color: var(--gray-500);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 48px;
 }
@@ -213,13 +253,11 @@ nav.visible {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 12px 0;
-  border-bottom: 1px solid transparent;
-  transition: all 0.3s;
+  transition: color 0.3s var(--ease-out-expo);
 }
 
 .hero-affiliations a:hover {
   color: var(--black);
-  border-color: var(--accent-green);
 }
 
 .scroll-hint {
@@ -336,7 +374,7 @@ section {
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: calc(var(--space-unit) * 6);
-  padding: calc(var(--space-unit) * 5);
+  padding: calc(var(--space-unit) * 6);
   background: var(--white);
   border: 1px solid var(--gray-200);
   border-radius: 8px;
@@ -347,7 +385,8 @@ section {
   width: 240px;
   height: 300px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
   filter: grayscale(20%);
   transition: filter 0.4s ease;
 }
@@ -423,14 +462,15 @@ section {
 }
 
 .member-photo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
+  width: 120px;
+  height: 150px;
+  aspect-ratio: 4 / 5;
+  border-radius: 12px;
   object-fit: cover;
   margin: 0 auto calc(var(--space-unit) * 1.5);
   filter: grayscale(30%);
   transition: all 0.3s ease;
-  border: 2px solid var(--gray-200);
+  border: 1px solid var(--gray-200);
 }
 
 .member:hover .member-photo {
@@ -442,7 +482,7 @@ section {
 .member-name {
   font-size: 0.9rem;
   font-weight: 500;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .member-role {
@@ -466,14 +506,11 @@ section {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--gray-500);
-  padding-bottom: 2px;
-  border-bottom: 1px solid var(--gray-300);
   transition: all 0.2s ease;
 }
 
 .pub-header a:hover {
   color: var(--black);
-  border-color: var(--black);
 }
 
 .pub-list {
@@ -724,7 +761,7 @@ section {
 #contact {
   background: var(--white);
   text-align: center;
-  padding: calc(var(--space-unit) * 16) calc(var(--space-unit) * 4);
+  padding: calc(var(--space-unit) * 12) calc(var(--space-unit) * 4);
 }
 
 #contact h2 {
@@ -737,7 +774,7 @@ section {
 #contact > .section-inner > p {
   font-size: 1.1rem;
   color: var(--gray-600);
-  margin-bottom: calc(var(--space-unit) * 5);
+  margin-bottom: calc(var(--space-unit) * 6);
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
@@ -844,6 +881,10 @@ footer {
     padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
   }
 
+  #contact {
+    padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
+  }
+
   .nav-inner {
     padding: 0 calc(var(--space-unit) * 3);
   }
@@ -863,7 +904,7 @@ footer {
 
   .pi-photo {
     width: 180px;
-    height: 220px;
+    height: 225px;
     margin: 0 auto;
   }
 
@@ -905,8 +946,8 @@ footer {
   }
 
   .member-photo {
-    width: 70px;
-    height: 70px;
+    width: 84px;
+    height: 105px;
   }
 
   .member-name {
