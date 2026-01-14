@@ -492,40 +492,6 @@ function initEventsCarousel() {
 }
 
 // ============================================
-// ALUMNI MARQUEE
-// ============================================
-function initAlumniMarquee() {
-  const marquee = document.querySelector('[data-marquee]');
-  if (!marquee) return;
-
-  const track = marquee.querySelector('[data-marquee-track]');
-  if (!track) return;
-
-  const items = Array.from(track.children);
-  if (items.length === 0) return;
-
-  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-  if (prefersReducedMotion) return;
-
-  // Duplicate items for seamless loop
-  items.forEach((item) => {
-    const clone = item.cloneNode(true);
-    clone.setAttribute('aria-hidden', 'true');
-    track.appendChild(clone);
-  });
-
-  function setDuration() {
-    const halfWidth = track.scrollWidth / 2;
-    const speed = 40; // px per second
-    const duration = Math.max(20, halfWidth / speed);
-    track.style.setProperty('--marquee-duration', `${duration}s`);
-  }
-
-  requestAnimationFrame(setDuration);
-  window.addEventListener('resize', setDuration);
-}
-
-// ============================================
 // INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -534,5 +500,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initSmoothScroll();
   initEventsCarousel();
-  initAlumniMarquee();
 });
