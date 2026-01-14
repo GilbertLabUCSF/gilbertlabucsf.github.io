@@ -35,12 +35,9 @@ function initDNABackground() {
 
   // DNA Parameters
   const config = {
-    particleCount: 120,
-    helixRadius: 50,
-    helixLength: 1.4, // multiplier of screen diagonal
-    wavelength: 80,
-    rotationSpeed: 0.0003,
-    particleSize: { min: 1.5, max: 4 },
+    strands: 160,
+    rungs: 34,
+    rotationSpeed: 0.00045,
     colors: {
       strandA: { r: 22, g: 163, b: 74 },   // Green
       strandB: { r: 20, g: 184, b: 166 },  // Teal
@@ -50,37 +47,15 @@ function initDNABackground() {
     }
   };
 
-  // Particles array
-  let particles = [];
-  let rungParticles = [];
-
-  // Initialize particles along helix
-  function initParticles() {
-    particles = [];
-    rungParticles = [];
-
-    for (let i = 0; i < config.particleCount; i++) {
-      const t = i / config.particleCount;
-      // Strand A
-      particles.push({ t, strand: 'A', size: config.particleSize.min + Math.random() * (config.particleSize.max - config.particleSize.min) });
-      // Strand B
-      particles.push({ t, strand: 'B', size: config.particleSize.min + Math.random() * (config.particleSize.max - config.particleSize.min) });
-
-      // Rung particles (every few)
-      if (i % 3 === 0) {
-        for (let r = 0; r < 5; r++) {
-          rungParticles.push({ t, r: r / 4, size: 1 + Math.random() * 1.5 });
-        }
-      }
-    }
-  }
-  initParticles();
-
   // Helix geometry
-  const diagonal = () => Math.sqrt(width() ** 2 + height() ** 2);
-  const startX = () => width() * 0.1;
+  const helixRadius = () => {
+    const size = Math.min(width(), height());
+    return Math.max(42, Math.min(90, size * 0.18));
+  };
+  const twists = () => Math.max(4, Math.min(7, height() / 180));
+  const startX = () => width() * 0.5 - helixRadius() * 0.3;
   const startY = () => -height() * 0.1;
-  const endX = () => width() * 0.9;
+  const endX = () => width() * 0.5 + helixRadius() * 0.3;
   const endY = () => height() * 1.1;
 
   function getHelixPoint(t, phase, strand) {
@@ -97,10 +72,10 @@ function initDNABackground() {
     const baseX = startX() + dirX * dist;
     const baseY = startY() + dirY * dist;
 
-    const angle = (dist / config.wavelength) * Math.PI * 2 + phase + (strand === 'B' ? Math.PI : 0);
-    const radius = config.helixRadius;
-    const offset = Math.sin(angle) * radius;
-    const depth = Math.cos(angle); // -1 to 1
+    const angle = t * twists() * Math.PI * 2 + phase + (strand === 'B' ? Math.PI : 0);
+    const radius = helixRadius();
+    const offset = Math.cos(angle) * radius;
+    const depth = Math.sin(angle); // -1 to 1
 
     return {
       x: baseX + perpX * offset,
@@ -152,66 +127,82 @@ function initDNABackground() {
 
     const phase = now * config.rotationSpeed;
 
-    // Sort particles by depth for proper rendering
-    const allParticles = [];
+    const strandSteps = config.strands;
+    const rungSteps = config.rungs;
 
-    // Add strand particles
-    particles.forEach(p => {
-      const pos = getHelixPoint(p.t, phase, p.strand);
-      allParticles.push({
-        ...pos,
-        size: p.size,
-        type: 'strand',
-        strand: p.strand
-      });
-    });
+    function depthAlpha(depth) {
+      return 0.25 + (depth + 1) / 2 * 0.65;
+    }
 
-    // Add rung particles
-    rungParticles.forEach(p => {
-      const posA = getHelixPoint(p.t, phase, 'A');
-      const posB = getHelixPoint(p.t, phase, 'B');
-      const x = posA.x + (posB.x - posA.x) * p.r;
-      const y = posA.y + (posB.y - posA.y) * p.r;
-      const depth = posA.depth + (posB.depth - posA.depth) * p.r;
-      allParticles.push({
-        x, y, depth,
-        size: p.size,
-        type: 'rung'
-      });
-    });
+    function depthWidth(depth, base) {
+      return base * (0.6 + (depth + 1) / 2 * 0.6);
+    }
 
-    // Sort by depth (back to front)
-    allParticles.sort((a, b) => a.depth - b.depth);
+    function drawStrand(strand, color) {
+      for (let i = 0; i < strandSteps - 1; i++) {
+        const t1 = i / (strandSteps - 1);
+        const t2 = (i + 1) / (strandSteps - 1);
+        const p1 = getHelixPoint(t1, phase, strand);
+        const p2 = getHelixPoint(t2, phase, strand);
+        const depth = (p1.depth + p2.depth) / 2;
+        const alpha = depthAlpha(depth);
+        const width = depthWidth(depth, 2.2);
 
-    // Draw particles
-    allParticles.forEach(p => {
-      const alpha = 0.2 + (p.depth + 1) / 2 * 0.6;
-      const size = p.size * (0.6 + (p.depth + 1) / 2 * 0.6);
+        // Glow
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.25})`;
+        ctx.lineWidth = width * 3;
+        ctx.lineCap = 'round';
+        ctx.stroke();
 
-      let color;
-      if (p.type === 'strand') {
-        color = p.strand === 'A' ? config.colors.strandA : config.colors.strandB;
-      } else {
-        color = config.colors.rung;
+        // Core
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
+        ctx.lineWidth = width;
+        ctx.stroke();
       }
+    }
 
-      // Glow effect
-      const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 3);
-      gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`);
-      gradient.addColorStop(0.4, `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.5})`);
-      gradient.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
+    function drawRung(t, front) {
+      const posA = getHelixPoint(t, phase, 'A');
+      const posB = getHelixPoint(t, phase, 'B');
+      const angle = t * twists() * Math.PI * 2 + phase;
+      const depth = Math.sin(angle);
+      if (front && depth <= 0) return;
+      if (!front && depth > 0) return;
+
+      const alpha = (front ? 0.5 : 0.18) + Math.abs(depth) * 0.15;
+      const width = front ? 1.6 : 1;
+      const c = config.colors.rung;
 
       ctx.beginPath();
-      ctx.arc(p.x, p.y, size * 3, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
-      ctx.fill();
+      ctx.moveTo(posA.x, posA.y);
+      ctx.lineTo(posB.x, posB.y);
+      ctx.strokeStyle = `rgba(${c.r}, ${c.g}, ${c.b}, ${alpha})`;
+      ctx.lineWidth = width;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    }
 
-      // Core
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
-      ctx.fill();
-    });
+    // Back rungs
+    for (let i = 0; i < rungSteps; i++) {
+      const t = (i + 0.5) / rungSteps;
+      drawRung(t, false);
+    }
+
+    // Strands
+    drawStrand('A', config.colors.strandA);
+    drawStrand('B', config.colors.strandB);
+
+    // Front rungs
+    for (let i = 0; i < rungSteps; i++) {
+      const t = (i + 0.5) / rungSteps;
+      drawRung(t, true);
+    }
 
     // Draw mutations
     mutations = mutations.filter(m => {
