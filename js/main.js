@@ -398,19 +398,86 @@ function initSmoothScroll() {
 }
 
 // ============================================
-// EVENTS NAVIGATION
+// EVENTS CAROUSEL
 // ============================================
-function initEventsNav() {
-  const yearLinks = document.querySelectorAll('.events-year-nav a');
-  yearLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      yearLinks.forEach(l => l.classList.remove('active'));
-      this.classList.add('active');
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) window.scrollTo({ top: target.offsetTop - 84, behavior: 'smooth' });
+function initEventsCarousel() {
+  const carousel = document.querySelector('[data-carousel]');
+  if (!carousel) return;
+
+  const track = carousel.querySelector('.carousel-track');
+  const slides = Array.from(track?.querySelectorAll('.event-slide') || []);
+  const prev = carousel.querySelector('.carousel-btn.prev');
+  const next = carousel.querySelector('.carousel-btn.next');
+  const dots = carousel.parentElement?.querySelector('[data-carousel-dots]');
+
+  if (!track || slides.length === 0) return;
+
+  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  let currentIndex = 0;
+  let rafId = null;
+
+  function getSlideWidth() {
+    const slide = slides[0];
+    const style = getComputedStyle(track);
+    const gap = parseFloat(style.columnGap || style.gap || 0);
+    return slide.getBoundingClientRect().width + gap;
+  }
+
+  function updateButtons() {
+    if (!prev || !next) return;
+    prev.disabled = currentIndex <= 0;
+    next.disabled = currentIndex >= slides.length - 1;
+  }
+
+  function updateDots() {
+    if (!dots) return;
+    const dotButtons = Array.from(dots.querySelectorAll('button'));
+    dotButtons.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === currentIndex);
     });
-  });
+  }
+
+  function scrollToIndex(index, behavior = 'smooth') {
+    const clamped = Math.max(0, Math.min(slides.length - 1, index));
+    const left = clamped * getSlideWidth();
+    track.scrollTo({ left, behavior: prefersReducedMotion ? 'auto' : behavior });
+    currentIndex = clamped;
+    updateButtons();
+    updateDots();
+  }
+
+  if (dots) {
+    dots.innerHTML = '';
+    slides.forEach((_, idx) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'carousel-dot';
+      dot.setAttribute('aria-label', `Go to slide ${idx + 1}`);
+      dot.addEventListener('click', () => scrollToIndex(idx));
+      dots.appendChild(dot);
+    });
+  }
+
+  function handleScroll() {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      const width = getSlideWidth();
+      const index = Math.round(track.scrollLeft / width);
+      if (index !== currentIndex) {
+        currentIndex = index;
+        updateButtons();
+        updateDots();
+      }
+    });
+  }
+
+  track.addEventListener('scroll', handleScroll, { passive: true });
+  prev?.addEventListener('click', () => scrollToIndex(currentIndex - 1));
+  next?.addEventListener('click', () => scrollToIndex(currentIndex + 1));
+  window.addEventListener('resize', () => scrollToIndex(currentIndex, 'auto'));
+
+  updateButtons();
+  updateDots();
 }
 
 // ============================================
@@ -421,5 +488,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initScrollAnimations();
   initSmoothScroll();
-  initEventsNav();
+  initEventsCarousel();
 });

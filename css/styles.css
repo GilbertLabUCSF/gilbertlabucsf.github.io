@@ -574,34 +574,84 @@ section {
   background: var(--gray-50);
 }
 
-.events-year-nav {
-  display: flex;
+.events-carousel {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   gap: calc(var(--space-unit) * 2);
-  margin-bottom: calc(var(--space-unit) * 5);
-  flex-wrap: wrap;
+  align-items: center;
 }
 
-.events-year-nav a {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--gray-500);
-  padding: 6px 14px;
+.carousel-viewport {
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(260px, 1fr);
+  gap: calc(var(--space-unit) * 3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: calc(var(--space-unit) * 1) calc(var(--space-unit) * 1) calc(var(--space-unit) * 2);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.event-slide {
+  scroll-snap-align: start;
+}
+
+.carousel-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
   border: 1px solid var(--gray-300);
-  border-radius: 4px;
+  background: var(--white);
+  color: var(--gray-700);
+  font-size: 1rem;
+  display: grid;
+  place-items: center;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.events-year-nav a:hover,
-.events-year-nav a.active {
+.carousel-btn:hover {
   color: var(--black);
   border-color: var(--black);
-  background: var(--white);
+  transform: translateY(-1px);
 }
 
-.events-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: calc(var(--space-unit) * 3);
+.carousel-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--space-unit) * 1);
+  margin-top: calc(var(--space-unit) * 3);
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--gray-300);
+  background: transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.carousel-dot.active {
+  background: var(--black);
+  border-color: var(--black);
 }
 
 .event-card {
@@ -655,19 +705,6 @@ section {
 .event-card-desc {
   font-size: 0.8rem;
   opacity: 0.8;
-}
-
-.events-year-section {
-  margin-bottom: calc(var(--space-unit) * 8);
-}
-
-.events-year-section h3 {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 400;
-  margin-bottom: calc(var(--space-unit) * 4);
-  padding-bottom: calc(var(--space-unit) * 2);
-  border-bottom: 1px solid var(--gray-300);
 }
 
 /* Protocols Section */
@@ -885,6 +922,14 @@ footer {
     padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
   }
 
+  .events-carousel {
+    grid-template-columns: 1fr;
+  }
+
+  .carousel-btn {
+    display: none;
+  }
+
   .nav-inner {
     padding: 0 calc(var(--space-unit) * 3);
   }
@@ -970,7 +1015,7 @@ footer {
     text-align: center;
   }
 
-  .events-gallery,
+  .carousel-track,
   .protocols-grid,
   .alumni-grid {
     grid-template-columns: 1fr;
