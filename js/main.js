@@ -35,13 +35,13 @@ function initDNABackground() {
 
   // DNA Parameters
   const config = {
-    particleCount: 140,
+    particleCount: 160,
     helixRadius: () => {
       const size = Math.min(width(), height());
-      return Math.max(70, Math.min(140, size * 0.26));
+      return Math.max(90, Math.min(180, size * 0.32));
     },
     helixLength: 1.4, // multiplier of screen diagonal
-    wavelength: 80,
+    wavelength: 70,
     rotationSpeed: 0.0003,
     particleSize: { min: 1.5, max: 4 },
     colors: {
