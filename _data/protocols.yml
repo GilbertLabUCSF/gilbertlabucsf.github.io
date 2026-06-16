@@ -1,0 +1,15 @@
+# Protocols & resources. Set `external: true` for off-site links (opens in a new tab).
+- title: CRISPR Library Re-amplification
+  description: Protocol for amplifying CRISPR libraries for screening experiments.
+  url: protocols/amplification_protocol.pdf
+  linktext: Download PDF →
+- title: CRISPRa/i Screening Protocols
+  description: Comprehensive screening methodologies using CRISPR activation and interference approaches.
+  url: https://weissman.wi.mit.edu/crispr/
+  external: true
+  linktext: Weissman Lab →
+- title: GitHub Repository
+  description: Code, tools, and computational resources from the Gilbert Lab.
+  url: https://github.com/GilbertLabUCSF
+  external: true
+  linktext: View on GitHub →

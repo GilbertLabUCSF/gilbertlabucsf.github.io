@@ -1,0 +1,26 @@
+# Selected publications, newest first. `url` is the DOI or PubMed link.
+- year: 2025
+  title: Integrated epigenetic and genetic programming of primary human T cells
+  authors: Goudy L et al.
+  journal: Nature Biotechnology
+  url: https://doi.org/10.1038/s41587-025-02856-w
+- year: 2025
+  title: PTGES3 as a direct modulator of androgen receptor function
+  authors: Li H et al.
+  journal: Nature Genetics
+  url: https://doi.org/10.1038/s41588-025-02388-8
+- year: 2025
+  title: Engineered Cas12a for combinatorial chromatin perturbations
+  authors: Hsiung CCS et al.
+  journal: Nature Biotechnology
+  url: https://doi.org/10.1038/s41587-024-02224-0
+- year: 2021
+  title: Genome-wide programmable transcriptional memory (CRISPRoff)
+  authors: Nuñez JK et al.
+  journal: Cell
+  url: https://pubmed.ncbi.nlm.nih.gov/33838111/
+- year: 2014
+  title: Genome-scale CRISPR control of gene repression and activation
+  authors: Gilbert LA et al.
+  journal: Cell
+  url: https://pubmed.ncbi.nlm.nih.gov/25307932/
