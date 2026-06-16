@@ -16,10 +16,7 @@ a minute).
 | Publications | `_data/publications.yml` |
 | Research areas | `_data/research.yml` |
 | Protocols & resources | `_data/protocols.yml` |
-| Lab events (for now) | `index.html` (events carousel) |
-
-> Lab events are still inline in `index.html` and will move to `_data/events.yml`
-> in a follow-up. Everything else is data-driven.
+| Lab events | `_data/events.yml` |
 
 ### Format basics
 
@@ -73,6 +70,17 @@ In `_data/research.yml`. The `icon` picks one of the built-in SVGs
   - title: New Area
     icon: helix
     description: One or two sentences describing the work.
+```
+
+### Add a lab event
+
+In `_data/events.yml` (newest first; the carousel shows the 12 most recent, so a new entry with a recent date appears automatically):
+
+```yaml
+- date: 2026-05-01
+  title: "Lab Retreat"
+  description: "Annual offsite"   # optional
+  image: images/events/retreat-2026.jpg
 ```
 
 ## Adding photos
