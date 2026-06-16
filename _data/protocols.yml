@@ -1,8 +1,9 @@
 # Protocols & resources. Set `external: true` for off-site links (opens in a new tab).
 - title: CRISPR Library Re-amplification
   description: Protocol for amplifying CRISPR libraries for screening experiments.
-  url: protocols/amplification_protocol.pdf
-  linktext: Download PDF →
+  url: https://weissman.wi.mit.edu/crispr/
+  external: true
+  linktext: View protocol →
 - title: CRISPRa/i Screening Protocols
   description: Comprehensive screening methodologies using CRISPR activation and interference approaches.
   url: https://weissman.wi.mit.edu/crispr/
