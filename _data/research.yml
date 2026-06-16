@@ -1,0 +1,27 @@
+# Research overview. `icon` picks an SVG from _includes/research-icons.html
+# (options: helix, nodes, screen, network, cells, shield).
+intro: >-
+  We are a synthetic biology and functional genomics lab. We build new CRISPR
+  tools to read and write the genome and epigenome, use them at genome scale to
+  learn how genes are regulated and how they interact, and apply what we learn
+  across human biology and disease — from immune cells to cancer.
+
+areas:
+  - title: Epigenome Engineering
+    icon: helix
+    description: We build and refine CRISPR tools — CRISPRi, CRISPRa, and CRISPRoff/CRISPRon — to switch genes on and off and write heritable epigenetic memory, all without cutting DNA.
+  - title: New CRISPR Systems
+    icon: nodes
+    description: We engineer new Cas enzymes and platforms, including a multiplexing-capable Cas12a that enables higher-order, combinatorial chromatin perturbations.
+  - title: Effector Discovery (COMET)
+    icon: screen
+    description: We screen large combinatorial libraries of dCas9–effector fusions to discover new transcriptional regulators and map the biochemistry that controls gene expression at a locus.
+  - title: Functional Genomics at Scale
+    icon: network
+    description: Genome-scale pooled and single-cell (Perturb-seq) screens, plus pairwise genetic-interaction maps, let us read gene function and epistasis across the genome.
+  - title: Gene Regulation Across Biology
+    icon: cells
+    description: We use these tools to program primary human T cells for next-generation cell therapies and to study cell fate, development, and epigenetic inheritance — not only disease.
+  - title: Cancer & Therapy Resistance
+    icon: shield
+    description: We model why some patients respond to therapy and others do not, across prostate cancer, hematopoietic malignancies, glioblastoma, and lung cancer.
