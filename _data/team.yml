@@ -1,0 +1,46 @@
+# Current lab members. Edit names/roles/photos here; the site rebuilds on push.
+pi:
+  name: Luke Gilbert
+  title: Principal Investigator
+  bio: Associate Professor at UCSF and Core Investigator at Arc Institute. PhD from MIT. Developed CRISPRi/a with Jonathan Weissman. NIH New Innovator. Pew-Stewart Scholar.
+  photo: https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/1543516234015-KJQ6G1X0RVWKKE3E99H6/image-asset.jpeg
+  email: luke@arcinstitute.org
+  scholar: https://scholar.google.com/citations?user=wlqxB00AAAAJ
+  ucsf: https://profiles.ucsf.edu/luke.gilbert
+  linkedin: https://www.linkedin.com/in/luke-gilbert-482a1048/
+
+scientists:
+  - name: Gary Wang
+    role: Senior Scientist
+    photo: https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/753f215d-e47a-409b-8808-874c472de79a/gary.jpg
+    linkedin: https://www.linkedin.com/in/gary-wang-53a98121/
+  - name: Kewa Gao
+    role: Senior Scientist
+    photo: https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/744a75f2-0d78-4736-9dee-2aea70f69875/tempImageCKft7v.jpg
+    linkedin: https://www.linkedin.com/in/kewa-gao-63072b176/
+  - name: Sarah Hsu
+    role: Fellow
+    photo: https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/1626720776617-VEAASKECS1F3YG9LUQYB/IMG-3575.jpg
+  - name: Tyler Fair
+    role: Scientist
+    photo: https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/f6cb2e98-52a0-494f-a37f-d9225638887a/Tyler.jpg
+    linkedin: https://www.linkedin.com/in/tylerfair/
+
+students:
+  - name: Ashir Borah
+    role: Graduate Student
+    photo: https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/eb5a6cd3-02b9-45b6-b660-82e9895e7b96/ash.jpg
+    linkedin: https://www.linkedin.com/in/ashirborah/
+  - name: Caroline Wilson
+    role: Graduate Student
+    photo: https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/ec81d6c1-6ec8-42b2-9008-54f91a900b23/caroline.jpg
+    linkedin: https://www.linkedin.com/in/caroline-wilson-b43958117
+
+staff:
+  - name: Ishwa Muzaffery
+    role: Lab Manager
+    photo: https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/91259b48-fe8e-4ce1-a894-b444fc591a03/ishwa.jpg
+    linkedin: https://www.linkedin.com/in/ishwa-muzaffery-0777271aa/
+  - name: Mandy Sun
+    role: Lab Technician
+    photo: https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/eae05cbe-4579-4c3e-a2d7-6e75d82602e5/IMG_1965.jpg

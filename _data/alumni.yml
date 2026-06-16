@@ -1,0 +1,61 @@
+# Lab alumni. `years` and `current` are optional; `linkedin` adds a link on the name.
+- name: Aidan Winters
+  current: Scientist II, Neptune Bio
+  linkedin: https://www.linkedin.com/in/aidanwinters
+- name: Alex Ge
+  years: 2017-2019
+  current: Medical Student, UCSF
+- name: Amanda Chung
+  years: 2019-2023
+  current: Editas Medicine
+  linkedin: https://www.linkedin.com/in/amanda-chung-18452056/
+- name: Becky Fu
+  current: Senior Scientist, Acrobat Genomics
+  linkedin: https://www.linkedin.com/in/becky-xu-hua-fu-69251364/
+- name: Ben Herken
+  current: Scientist, Xaira Therapeutics
+  linkedin: https://www.linkedin.com/in/ben-herken-571b1bb4/
+- name: Chris Hsiung
+  current: Assistant Professor, UCSF
+  linkedin: https://www.linkedin.com/in/chris-hsiung-90442380/
+- name: Chris Yogodzinski
+  years: 2018-2020
+  current: Applied Scientist, Collaborations Pharmaceuticals
+  linkedin: https://www.linkedin.com/in/christopher-yogodzinski-171622118/
+- name: Garrett Wong
+- name: Greg Pommier
+  years: 2020-2022
+  current: Medical Student, Johns Hopkins
+  linkedin: https://www.linkedin.com/in/greg-pommier-9b899a83/
+- name: Haolong Li
+  current: Assistant Professor, Fred Hutchinson Cancer Center
+  linkedin: https://www.linkedin.com/in/haolong-li/
+- name: Jason Estep
+  current: Senior Scientist, Terremoto Biosciences
+  linkedin: https://www.linkedin.com/in/jason-estep-a6394510a/
+- name: Jason Swinderman
+  current: MD/PhD Student (MSTP), UCSF
+- name: John Liu
+  current: Assistant Professor, UCSF
+- name: Laine Goudy
+  current: Scientist, Xaira Therapeutics
+  linkedin: https://www.linkedin.com/in/laine-goudy-157271112
+- name: Lilly Scheibe
+  years: 2019-2021
+  current: Harvard Medical School
+- name: Nicholas Sambold
+  current: Graduate Student, Stanford
+- name: Raymond Dai
+  current: Data Acquisition & Architecture, Eli Lilly and Company
+  linkedin: https://www.linkedin.com/in/raydai95/
+- name: Sara Misiukiewicz
+  years: 2020-2022
+  current: Graduate Student, UCSF
+  linkedin: https://www.linkedin.com/in/sara-misiukiewicz-0b50a812a/
+- name: Shaheen Kabir
+  years: 2018-2021
+  current: Director, CRISPR Therapeutics
+  linkedin: https://www.linkedin.com/in/shaheenkabir/
+- name: Tom O'Loughlin
+  years: 2019-2022
+  current: Assistant Professor, Mount Sinai
