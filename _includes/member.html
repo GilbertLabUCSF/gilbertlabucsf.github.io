@@ -1,0 +1,8 @@
+<div class="member">
+  <img src="{{ include.m.photo }}" alt="{{ include.m.name }}" class="member-photo">
+  <div class="member-name">{{ include.m.name }}</div>
+  <div class="member-role">{{ include.m.role }}</div>
+  {%- if include.m.linkedin %}
+  <a class="member-link" href="{{ include.m.linkedin }}" target="_blank" rel="noopener" aria-label="{{ include.m.name }} on LinkedIn">LinkedIn ↗</a>
+  {%- endif %}
+</div>

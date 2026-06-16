@@ -1,120 +1,104 @@
 # Gilbert Lab Website
 
-## For Content Editors (Non-Technical Users)
+A [Jekyll](https://jekyllrb.com/) site hosted on GitHub Pages. Content lives in
+plain data files under `_data/`, so most updates don't require touching any HTML.
 
-This guide explains how to update website content. **You only need to edit files in the `content/` folder.**
+## For Content Editors
 
----
+**Almost everything you'll want to change lives in the `_data/` folder.** Edit a
+file, commit/push it, and GitHub rebuilds the site automatically (usually within
+a minute).
 
-## Quick Start
-
-1. Open the file you want to edit in any text editor
-2. Make your changes following the format examples below
-3. Save the file
-4. Refresh the website to see your changes
-
----
-
-## File Locations
-
-| What to Update | File to Edit |
+| What to update | File to edit |
 |----------------|--------------|
-| Lab events | `content/events.md` |
-| Protocols & resources | `content/protocols.md` |
-| Alumni list | `content/alumni.md` |
-| Publications | `content/publications.md` |
-| Research areas | `content/research.md` |
-| Team - Scientists | `content/team/scientists.md` |
-| Team - Students | `content/team/students.md` |
-| Team - Staff | `content/team/staff.md` |
-| PI info | `content/team/pi.md` |
+| Team — PI, scientists, students, staff | `_data/team.yml` |
+| Alumni | `_data/alumni.yml` |
+| Publications | `_data/publications.yml` |
+| Research areas | `_data/research.yml` |
+| Protocols & resources | `_data/protocols.yml` |
+| Lab events (for now) | `index.html` (events carousel) |
 
----
+> Lab events are still inline in `index.html` and will move to `_data/events.yml`
+> in a follow-up. Everything else is data-driven.
 
-## How to Edit Each Section
+### Format basics
 
-### Adding a Lab Event
+The data files are [YAML](https://learnxinyminutes.com/docs/yaml/). The rules:
 
-Open `content/events.md` and add a new event under "Upcoming" or "Past":
+- Keep the **indentation** (2 spaces) exactly as shown.
+- Each list entry starts with `- `.
+- Each property is `key: value`.
+- If a value contains a colon followed by a space, wrap it in quotes.
 
-```markdown
-### Event Title
-- date: January 20, 2026
-- presenter: Person Name
-- topic: What the event is about
+### Add a team member
+
+In `_data/team.yml`, add an entry under `scientists`, `students`, or `staff`:
+
+```yaml
+  - name: Jane Doe
+    role: Postdoc
+    photo: images/team/jane.jpg
+    linkedin: https://www.linkedin.com/in/janedoe/   # optional
 ```
 
-### Adding a Protocol
+### Add an alumnus
 
-Open `content/protocols.md` and add:
+In `_data/alumni.yml` (kept alphabetical):
 
-```markdown
-## Protocol Name
-- description: Brief description of what this protocol covers.
-- file: protocols/filename.pdf
+```yaml
+- name: Jane Doe
+  years: 2020-2024          # optional
+  current: Scientist, Acme Bio   # optional
+  linkedin: https://www.linkedin.com/in/janedoe/   # optional
 ```
 
-For external links instead of PDFs:
-```markdown
-## Resource Name
-- description: Brief description.
-- link: https://example.com/resource
+### Add a publication
+
+In `_data/publications.yml` (newest first):
+
+```yaml
+- year: 2026
+  title: Your paper title
+  authors: Doe J et al.
+  journal: Nature
+  url: https://doi.org/10.xxxx/xxxxx
 ```
 
-### Adding an Alumni
+### Edit a research area
 
-Open `content/alumni.md` and add:
+In `_data/research.yml`. The `icon` picks one of the built-in SVGs
+(`helix`, `nodes`, `screen`, `network`, `cells`, `shield`):
 
-```markdown
-## Person Name
-- years: 2020-2024
-- current: Current Position, Company/University
+```yaml
+  - title: New Area
+    icon: helix
+    description: One or two sentences describing the work.
 ```
 
-### Adding a Publication
+## Adding photos
 
-Open `content/publications.md` and add under the appropriate year:
+1. Put the image in `images/team/`.
+2. Reference it in the YAML as `images/team/filename.jpg`.
+3. Square-ish portraits work best (e.g. 400×500).
 
-```markdown
-### Paper Title
-- authors: LastName A et al.
-- journal: Journal Name
-- doi: 10.1234/example.doi
+## Previewing locally (optional)
+
+The live site builds on GitHub automatically — you don't need any of this just to
+publish. To preview before pushing, you need Jekyll once:
+
+```bash
+gem install bundler jekyll
+bundle install
+bundle exec jekyll serve
 ```
 
-### Adding a Team Member
+Then open http://localhost:4000. (Because the site is now templated, opening
+`index.html` directly via `file://` will not render the content — use the
+local server, or just push and view the live site.)
 
-Open the appropriate file in `content/team/`:
-- Scientists/Postdocs: `scientists.md`
-- Graduate Students: `students.md`
-- Staff: `staff.md`
+## Notes
 
-Add:
-```markdown
-## Person Name
-- role: Their Role
-- photo: images/team/filename.jpg
-```
-
----
-
-## Adding Photos
-
-1. Put the photo file in the `images/team/` folder
-2. Reference it in the markdown file as `images/team/filename.jpg`
-3. Recommended: Square photos work best (e.g., 400x400 pixels)
-
----
-
-## Important Notes
-
-- **Don't change the `##` symbols** - these mark section headers
-- **Keep the `- ` before each property** - this is required formatting
-- **Don't edit `index.html`** - that's the template file
-- **Don't edit files in `css/` or `js/`** - those control styling
-
----
-
-## Need Help?
-
-Contact the lab webmaster or see the [Markdown Guide](https://www.markdownguide.org/basic-syntax/) for formatting help.
+- **Don't hand-edit** `index.html`, `css/`, or `js/` for content changes — use the
+  `_data/` files.
+- `_config.yml` holds site-wide settings.
+- The DNA-helix hero animation lives in `js/main.js`.

@@ -1,3 +1,6 @@
+---
+# Front matter (even empty) tells Jekyll to process this file with Liquid.
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,104 +74,17 @@
   <section id="research">
     <div class="section-inner">
       <p class="section-label fade-in">Research</p>
+      <p class="research-intro fade-in">{{ site.data.research.intro }}</p>
       <div class="research-grid fade-in" id="research-grid">
-        <!-- Content loaded from content/research.md or hardcoded below -->
+        {% for area in site.data.research.areas %}
         <div class="research-card">
           <div class="research-card-head">
-            <div class="research-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 6c8 6 8 30 0 36"/>
-                <path d="M32 6c-8 6-8 30 0 36"/>
-                <path d="M19 14h10"/>
-                <path d="M19 22h10"/>
-                <path d="M19 30h10"/>
-              </svg>
-            </div>
-            <h3>Epigenome Engineering</h3>
+            <div class="research-icon" aria-hidden="true">{% include research-icons.html icon=area.icon %}</div>
+            <h3>{{ area.title }}</h3>
           </div>
-          <p>CRISPRi, CRISPRa, and CRISPRoff for programmable control of gene expression without cutting DNA.</p>
+          <p>{{ area.description }}</p>
         </div>
-        <div class="research-card">
-          <div class="research-card-head">
-            <div class="research-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="4"/>
-                <circle cx="36" cy="12" r="4"/>
-                <circle cx="24" cy="28" r="4"/>
-                <circle cx="12" cy="36" r="4"/>
-                <circle cx="36" cy="36" r="4"/>
-                <path d="M16 12h16"/>
-                <path d="M24 16v8"/>
-                <path d="M14 34l6-4"/>
-                <path d="M34 34l-6-4"/>
-              </svg>
-            </div>
-            <h3>Functional Genomics</h3>
-          </div>
-          <p>Genome-scale screens to map genetic interactions and identify synthetic lethal targets in cancer.</p>
-        </div>
-        <div class="research-card">
-          <div class="research-card-head">
-            <div class="research-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="16" r="4"/>
-                <circle cx="24" cy="28" r="4"/>
-                <circle cx="36" cy="16" r="4"/>
-                <path d="M12 20v8"/>
-                <path d="M24 12v12"/>
-                <path d="M36 20v8"/>
-              </svg>
-            </div>
-            <h3>Single-Cell / Perturb-seq</h3>
-          </div>
-          <p>High-throughput screens to map transcriptional responses across phenotypes and diverse cell types.</p>
-        </div>
-        <div class="research-card">
-          <div class="research-card-head">
-            <div class="research-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M24 6l14 6v9c0 10-6 16-14 21-8-5-14-11-14-21v-9l14-6z"/>
-                <path d="M20 22l4 6 6-10"/>
-              </svg>
-            </div>
-            <h3>Drug Resistance</h3>
-          </div>
-          <p>Modeling therapy response in prostate cancer, AML, glioblastoma, and lung cancer.</p>
-        </div>
-        <div class="research-card">
-          <div class="research-card-head">
-            <div class="research-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="8" y="14" width="10" height="20" rx="2"/>
-                <rect x="19" y="10" width="10" height="28" rx="2"/>
-                <rect x="30" y="18" width="10" height="12" rx="2"/>
-                <path d="M13 8v4"/>
-                <path d="M24 4v4"/>
-                <path d="M35 12v4"/>
-              </svg>
-            </div>
-            <h3>COMET / Effector Discovery</h3>
-          </div>
-          <p>High-throughput screening of combinatorial dCas9 effector fusions to discover transcriptional modulators and map domain interactions.</p>
-        </div>
-        <div class="research-card">
-          <div class="research-card-head">
-            <div class="research-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="24" r="4"/>
-                <circle cx="24" cy="12" r="4"/>
-                <circle cx="36" cy="24" r="4"/>
-                <circle cx="24" cy="36" r="4"/>
-                <path d="M15 21l6-6"/>
-                <path d="M27 15l6 6"/>
-                <path d="M33 27l-6 6"/>
-                <path d="M21 33l-6-6"/>
-              </svg>
-            </div>
-            <h3>Combinatorial Perturbations</h3>
-          </div>
-          <p>Engineered Cas12a for multiplexed chromatin editing and higher-order genetic interactions.</p>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -185,15 +101,16 @@
 
       <!-- Principal Investigator -->
       <div class="pi-card fade-in">
-        <img src="https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/1543516234015-KJQ6G1X0RVWKKE3E99H6/image-asset.jpeg" alt="Luke Gilbert" class="pi-photo">
+        <img src="{{ site.data.team.pi.photo }}" alt="{{ site.data.team.pi.name }}" class="pi-photo">
         <div class="pi-info">
-          <h3>Luke Gilbert</h3>
-          <p class="pi-title">Principal Investigator</p>
-          <p class="pi-bio">Associate Professor at UCSF and Core Investigator at Arc Institute. PhD from MIT. Developed CRISPRi/a with Jonathan Weissman. NIH New Innovator. Pew-Stewart Scholar.</p>
+          <h3>{{ site.data.team.pi.name }}</h3>
+          <p class="pi-title">{{ site.data.team.pi.title }}</p>
+          <p class="pi-bio">{{ site.data.team.pi.bio }}</p>
           <div class="pi-links">
-            <a href="mailto:luke@arcinstitute.org">Email</a>
-            <a href="https://scholar.google.com/citations?user=wlqxB00AAAAJ" target="_blank">Scholar</a>
-            <a href="https://profiles.ucsf.edu/luke.gilbert" target="_blank">UCSF</a>
+            {% if site.data.team.pi.email %}<a href="mailto:{{ site.data.team.pi.email }}">Email</a>{% endif %}
+            {% if site.data.team.pi.scholar %}<a href="{{ site.data.team.pi.scholar }}" target="_blank" rel="noopener">Scholar</a>{% endif %}
+            {% if site.data.team.pi.ucsf %}<a href="{{ site.data.team.pi.ucsf }}" target="_blank" rel="noopener">UCSF</a>{% endif %}
+            {% if site.data.team.pi.linkedin %}<a href="{{ site.data.team.pi.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
           </div>
         </div>
       </div>
@@ -202,26 +119,7 @@
       <div class="members-section fade-in">
         <h4>Scientists & Postdocs</h4>
         <div class="members-grid" id="scientists-grid">
-          <div class="member">
-            <img src="https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/753f215d-e47a-409b-8808-874c472de79a/gary.jpg" alt="Gary Wang" class="member-photo">
-            <div class="member-name">Gary Wang</div>
-            <div class="member-role">Scientist</div>
-          </div>
-          <div class="member">
-            <img src="https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/744a75f2-0d78-4736-9dee-2aea70f69875/tempImageCKft7v.jpg" alt="Kewa Gao" class="member-photo">
-            <div class="member-name">Kewa Gao</div>
-            <div class="member-role">Scientist</div>
-          </div>
-          <div class="member">
-            <img src="https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/1626720776617-VEAASKECS1F3YG9LUQYB/IMG-3575.jpg" alt="Sarah Hsu" class="member-photo">
-            <div class="member-name">Sarah Hsu</div>
-            <div class="member-role">Fellow</div>
-          </div>
-          <div class="member">
-            <img src="https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/f6cb2e98-52a0-494f-a37f-d9225638887a/Tyler.jpg" alt="Tyler Fair" class="member-photo">
-            <div class="member-name">Tyler Fair</div>
-            <div class="member-role">Scientist</div>
-          </div>
+          {% for m in site.data.team.scientists %}{% include member.html m=m %}{% endfor %}
         </div>
       </div>
 
@@ -229,16 +127,7 @@
       <div class="members-section fade-in">
         <h4>Graduate Students</h4>
         <div class="members-grid" id="students-grid">
-          <div class="member">
-            <img src="https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/eb5a6cd3-02b9-45b6-b660-82e9895e7b96/ash.jpg" alt="Ashir Borah" class="member-photo">
-            <div class="member-name">Ashir Borah</div>
-            <div class="member-role">Graduate Student</div>
-          </div>
-          <div class="member">
-            <img src="https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/ec81d6c1-6ec8-42b2-9008-54f91a900b23/caroline.jpg" alt="Caroline Wilson" class="member-photo">
-            <div class="member-name">Caroline Wilson</div>
-            <div class="member-role">Graduate Student</div>
-          </div>
+          {% for m in site.data.team.students %}{% include member.html m=m %}{% endfor %}
         </div>
       </div>
 
@@ -246,16 +135,7 @@
       <div class="members-section fade-in">
         <h4>Staff</h4>
         <div class="members-grid" id="staff-grid">
-          <div class="member">
-            <img src="https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/91259b48-fe8e-4ce1-a894-b444fc591a03/ishwa.jpg" alt="Ishwa Muzaffery" class="member-photo">
-            <div class="member-name">Ishwa Muzaffery</div>
-            <div class="member-role">Lab Manager</div>
-          </div>
-          <div class="member">
-            <img src="https://images.squarespace-cdn.com/content/v1/5bff2e82b40b9dd83d79f536/eae05cbe-4579-4c3e-a2d7-6e75d82602e5/IMG_1965.jpg" alt="Mandy Sun" class="member-photo">
-            <div class="member-name">Mandy Sun</div>
-            <div class="member-role">Lab Technician</div>
-          </div>
+          {% for m in site.data.team.staff %}{% include member.html m=m %}{% endfor %}
         </div>
       </div>
     </div>
@@ -273,46 +153,16 @@
       </div>
 
       <div class="pub-list" id="publications-list">
-        <a href="https://doi.org/10.1038/s41587-025-02856-w" target="_blank" class="pub-item fade-in">
-          <div class="pub-year">2025</div>
+        {% for pub in site.data.publications %}
+        <a href="{{ pub.url }}" target="_blank" rel="noopener" class="pub-item fade-in">
+          <div class="pub-year">{{ pub.year }}</div>
           <div>
-            <div class="pub-title">Integrated epigenetic and genetic programming of primary human T cells</div>
-            <div class="pub-meta">Goudy L et al. · <em>Nature Biotechnology</em></div>
+            <div class="pub-title">{{ pub.title }}</div>
+            <div class="pub-meta">{{ pub.authors }} · <em>{{ pub.journal }}</em></div>
           </div>
           <div class="pub-arrow">→</div>
         </a>
-        <a href="https://doi.org/10.1038/s41588-025-02388-8" target="_blank" class="pub-item fade-in">
-          <div class="pub-year">2025</div>
-          <div>
-            <div class="pub-title">PTGES3 as a direct modulator of androgen receptor function</div>
-            <div class="pub-meta">Li H et al. · <em>Nature Genetics</em></div>
-          </div>
-          <div class="pub-arrow">→</div>
-        </a>
-        <a href="https://doi.org/10.1038/s41587-024-02224-0" target="_blank" class="pub-item fade-in">
-          <div class="pub-year">2025</div>
-          <div>
-            <div class="pub-title">Engineered Cas12a for combinatorial chromatin perturbations</div>
-            <div class="pub-meta">Hsiung CCS et al. · <em>Nature Biotechnology</em></div>
-          </div>
-          <div class="pub-arrow">→</div>
-        </a>
-        <a href="https://pubmed.ncbi.nlm.nih.gov/33838111/" target="_blank" class="pub-item fade-in">
-          <div class="pub-year">2021</div>
-          <div>
-            <div class="pub-title">Genome-wide programmable transcriptional memory (CRISPRoff)</div>
-            <div class="pub-meta">Nuñez JK et al. · <em>Cell</em></div>
-          </div>
-          <div class="pub-arrow">→</div>
-        </a>
-        <a href="https://pubmed.ncbi.nlm.nih.gov/25307932/" target="_blank" class="pub-item fade-in">
-          <div class="pub-year">2014</div>
-          <div>
-            <div class="pub-title">Genome-scale CRISPR control of gene repression and activation</div>
-            <div class="pub-meta">Gilbert LA et al. · <em>Cell</em></div>
-          </div>
-          <div class="pub-arrow">→</div>
-        </a>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -441,21 +291,13 @@
       </div>
 
       <div class="protocols-grid fade-in" id="protocols-grid">
-        <a href="protocols/amplification_protocol.pdf" class="protocol-card">
-          <h3>CRISPR Library Re-amplification</h3>
-          <p>Protocol for amplifying CRISPR libraries for screening experiments.</p>
-          <span class="protocol-link">Download PDF →</span>
+        {% for p in site.data.protocols %}
+        <a href="{{ p.url }}"{% if p.external %} target="_blank" rel="noopener"{% endif %} class="protocol-card">
+          <h3>{{ p.title }}</h3>
+          <p>{{ p.description }}</p>
+          <span class="protocol-link">{{ p.linktext }}</span>
         </a>
-        <a href="https://weissman.wi.mit.edu/crispr/" target="_blank" class="protocol-card">
-          <h3>CRISPRa/i Screening Protocols</h3>
-          <p>Comprehensive screening methodologies using CRISPR activation and interference approaches.</p>
-          <span class="protocol-link">Weissman Lab →</span>
-        </a>
-        <a href="https://github.com/GilbertLabUCSF" target="_blank" class="protocol-card">
-          <h3>GitHub Repository</h3>
-          <p>Code, tools, and computational resources from the Gilbert Lab.</p>
-          <span class="protocol-link">View on GitHub →</span>
-        </a>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -469,85 +311,14 @@
       </div>
 
       <div class="alumni-grid fade-in" id="alumni-grid">
+        {% for a in site.data.alumni %}
         <div class="alumni-item">
-          <div class="alumni-name">Aidan Winters</div>
-          <div class="alumni-meta">Scientist II, Neptune Bio</div>
+          <div class="alumni-name">{% if a.linkedin %}<a href="{{ a.linkedin }}" target="_blank" rel="noopener">{{ a.name }} ↗</a>{% else %}{{ a.name }}{% endif %}</div>
+          {% if a.years and a.current %}<div class="alumni-meta">{{ a.years }} · {{ a.current }}</div>
+          {% elsif a.current %}<div class="alumni-meta">{{ a.current }}</div>
+          {% elsif a.years %}<div class="alumni-meta">{{ a.years }}</div>{% endif %}
         </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Alex Ge</div>
-          <div class="alumni-meta">2017-2019 · Medical Student, UCSF</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Amanda Chung</div>
-          <div class="alumni-meta">2019-2023 · Editas Medicine</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Becky Fu</div>
-          <div class="alumni-meta">Scientist, Acrobat Genomics</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Ben Herken</div>
-          <div class="alumni-meta">Scientist, Xiara Therapeutics</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Chris Hsiung</div>
-          <div class="alumni-meta">Assistant Professor, UCSF</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Chris Yogodzinski</div>
-          <div class="alumni-meta">2018-2020 · Graduate Student, UNC</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Garrett Wong</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Greg Pommier</div>
-          <div class="alumni-meta">2020-2022 · Medical Student, Johns Hopkins</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Haolong Li</div>
-          <div class="alumni-meta">Assistant Professor, Fred Hutch</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Jason Estep</div>
-          <div class="alumni-meta">Senior Scientist, Terremoto Biosciences</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Jason Swindermann</div>
-          <div class="alumni-meta">Medical School, MD/PhD, UCSF</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">John Liu</div>
-          <div class="alumni-meta">Assistant Professor, UCSF</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Laine Goudy</div>
-          <div class="alumni-meta">Scientist, Xiara Therapeutics</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Lilly Scheibe</div>
-          <div class="alumni-meta">2019-2021 · Harvard Medical School</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Nicholas Sambold</div>
-          <div class="alumni-meta">Graduate Student, Stanford</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Raymond Dai</div>
-          <div class="alumni-meta">Data Acquisition & Architecture, Eli Lilly and Company</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Sara Misiukiewicz</div>
-          <div class="alumni-meta">2020-2022 · Graduate Student, UCSF</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Shaheen Kabir</div>
-          <div class="alumni-meta">2018-2021 · Graphite Bio</div>
-        </div>
-        <div class="alumni-item">
-          <div class="alumni-name">Tom O'Loughlin</div>
-          <div class="alumni-meta">2019-2022 · Assistant Professor, Mount Sinai</div>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </section>

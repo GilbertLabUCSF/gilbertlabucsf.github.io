@@ -1,0 +1,11 @@
+title: Gilbert Lab
+description: CRISPR epigenome engineering, functional genomics, and cancer biology research at UCSF and Arc Institute
+url: https://gilbertlab.ucsf.edu
+
+# Files/folders kept out of the built site
+exclude:
+  - README.md
+  - content        # legacy source notes (events.md pending conversion to _data)
+  - Gemfile
+  - Gemfile.lock
+  - vendor

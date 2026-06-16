@@ -550,6 +550,19 @@ section {
   color: var(--gray-500);
 }
 
+.member-link {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--gray-500);
+  transition: color 0.2s ease;
+}
+
+.member-link:hover {
+  color: var(--black);
+}
+
 /* Publications Section */
 #publications {
   background: var(--white);
@@ -851,6 +864,14 @@ section {
   font-size: 0.65rem;
   color: var(--gray-500);
   line-height: 1.2;
+}
+
+.alumni-name a {
+  color: inherit;
+}
+
+.alumni-item:hover .alumni-name a {
+  color: var(--accent-green);
 }
 
 
