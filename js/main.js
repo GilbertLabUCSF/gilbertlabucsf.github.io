@@ -48,8 +48,9 @@ function initDNABackground() {
       strandA: { r: 22, g: 163, b: 74 },   // Green
       strandB: { r: 20, g: 184, b: 166 },  // Teal
       rung: { r: 34, g: 197, b: 94 },      // Light green
-      cas9: { r: 251, g: 191, b: 36 },     // Amber
-      mutation: { r: 239, g: 68, b: 68 }   // Red
+      effector: { r: 71, g: 85, b: 105 },  // Slate — dCas9 protein body (binds, never cuts)
+      activate: { r: 34, g: 197, b: 94 },  // Green — CRISPRa, gene turned ON
+      repress: { r: 120, g: 130, b: 140 }  // Cool grey — CRISPRi, gene turned OFF
     }
   };
 
@@ -112,20 +113,29 @@ function initDNABackground() {
     };
   }
 
-  // Cas9 state
-  let cas9 = {
+  // Linearly blend two {r,g,b} colors (t in 0..1)
+  function blendColor(a, b, t) {
+    return {
+      r: a.r + (b.r - a.r) * t,
+      g: a.g + (b.g - a.g) * t,
+      b: a.b + (b.b - a.b) * t
+    };
+  }
+
+  // dCas9 effector state — it BINDS the helix (never cuts) and toggles local expression
+  let effector = {
     active: false,
     t: 0.5,
     startTime: 0,
-    x: 0,
-    y: 0,
-    opacity: 0
+    seeded: false,
+    mode: 'activate' // alternates 'activate' (CRISPRa) / 'repress' (CRISPRi)
   };
-  let lastCutTime = performance.now() - 2000;
-  let cutInterval = 5000;
+  let lastEventTime = performance.now() - 2000;
+  let eventInterval = 5000;
+  let eventCount = 0;
 
-  // Mutations
-  let mutations = [];
+  // Regulated regions — a glowing (activated) or dimmed (repressed) stretch of the helix
+  let regions = [];
 
   // Animation
   let rafId = null;
@@ -162,6 +172,7 @@ function initDNABackground() {
       const pos = getHelixPoint(p.t, phase, p.strand);
       allParticles.push({
         ...pos,
+        t: p.t,
         size: p.size,
         type: 'strand',
         strand: p.strand
@@ -177,6 +188,7 @@ function initDNABackground() {
       const depth = posA.depth + (posB.depth - posA.depth) * p.r;
       allParticles.push({
         x, y, depth,
+        t: p.t,
         size: p.size,
         type: 'rung'
       });
@@ -187,8 +199,11 @@ function initDNABackground() {
 
     // Draw particles
     allParticles.forEach(p => {
-      const alpha = 0.2 + (p.depth + 1) / 2 * 0.6;
-      const size = p.size * (0.6 + (p.depth + 1) / 2 * 0.6);
+      // Fade gracefully at the helix ends so particles dissolve instead of popping in/out
+      const edgeFade = Math.min(1, p.t / 0.08) * Math.min(1, (1 - p.t) / 0.08);
+      let alpha = (0.2 + (p.depth + 1) / 2 * 0.6) * edgeFade;
+      if (alpha <= 0.012) return;
+      let size = p.size * (0.6 + (p.depth + 1) / 2 * 0.6);
 
       let color;
       if (p.type === 'strand') {
@@ -197,14 +212,31 @@ function initDNABackground() {
         color = config.colors.rung;
       }
 
+      // dCas9 binding regulates the local stretch: activation brightens, repression mutes
+      let glowBoost = 1;
+      for (const reg of regions) {
+        const influence = Math.exp(-Math.pow((p.t - reg.t) / reg.span, 2)) * reg.strength;
+        if (influence < 0.02) continue;
+        if (reg.mode === 'activate') {
+          color = blendColor(color, config.colors.activate, influence);
+          glowBoost = Math.max(glowBoost, 1 + influence * 1.6);
+          alpha = Math.min(1, alpha + influence * 0.35);
+        } else {
+          color = blendColor(color, config.colors.repress, influence * 0.9);
+          alpha *= 1 - influence * 0.55;
+          size *= 1 - influence * 0.2;
+        }
+      }
+
       // Glow effect
-      const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 3);
+      const glowR = size * 3 * glowBoost;
+      const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR);
       gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`);
       gradient.addColorStop(0.4, `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.5})`);
       gradient.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
 
       ctx.beginPath();
-      ctx.arc(p.x, p.y, size * 3, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, glowR, 0, Math.PI * 2);
       ctx.fillStyle = gradient;
       ctx.fill();
 
@@ -215,135 +247,105 @@ function initDNABackground() {
       ctx.fill();
     });
 
-    // Draw mutations
-    mutations = mutations.filter(m => {
-      const age = now - m.startTime;
-      if (age > 8000) return false;
-
-      const posA = getHelixPoint(m.t, phase, 'A');
-      const posB = getHelixPoint(m.t, phase, 'B');
-      const x = (posA.x + posB.x) / 2;
-      const y = (posA.y + posB.y) / 2;
-
-      let alpha;
-      if (age < 500) alpha = age / 500;
-      else if (age > 7000) alpha = (8000 - age) / 1000;
-      else alpha = 1;
-
-      // Mutation glow
-      const c = config.colors.mutation;
-      const size = 15 + Math.sin(age * 0.008) * 5;
-
-      const gradient = ctx.createRadialGradient(x, y, 0, x, y, size);
-      gradient.addColorStop(0, `rgba(${c.r}, ${c.g}, ${c.b}, ${alpha * 0.8})`);
-      gradient.addColorStop(0.5, `rgba(${c.r}, ${c.g}, ${c.b}, ${alpha * 0.3})`);
-      gradient.addColorStop(1, `rgba(${c.r}, ${c.g}, ${c.b}, 0)`);
-
-      ctx.beginPath();
-      ctx.arc(x, y, size, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
-      ctx.fill();
-
-      // Core
-      ctx.beginPath();
-      ctx.arc(x, y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.9})`;
-      ctx.fill();
-
+    // Age active regulated regions: ramp up while bound, hold, then release smoothly
+    regions = regions.filter(reg => {
+      const age = now - reg.startTime;
+      if (age > reg.life) return false;
+      if (age < 600) reg.strength = (age / 600) * reg.peak;                       // binding
+      else if (age > reg.life - 1400) reg.strength = ((reg.life - age) / 1400) * reg.peak; // release
+      else reg.strength = reg.peak;
       return true;
     });
 
-    // Trigger Cas9
-    if (!cas9.active && now - lastCutTime > cutInterval) {
-      cas9.active = true;
-      cas9.startTime = now;
-      cas9.t = 0.2 + Math.random() * 0.6;
-      lastCutTime = now;
-      cutInterval = 4000 + Math.random() * 3000;
+    // Activated genes emit faint "transcription" sparks drifting upward
+    regions.forEach(reg => {
+      if (reg.mode !== 'activate' || reg.strength < 0.3) return;
+      const pos = getHelixPoint(reg.t, phase, 'A');
+      const c = config.colors.activate;
+      for (let i = 0; i < 3; i++) {
+        const tt = ((now * 0.0006) + i / 3) % 1;
+        const a = (1 - tt) * reg.strength * 0.5;
+        ctx.beginPath();
+        ctx.arc(pos.x + Math.sin(tt * 6 + i) * 9, pos.y - tt * 64, 1.6, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, ${a})`;
+        ctx.fill();
+      }
+    });
+
+    // Schedule the next binding event, alternating CRISPRa (on) and CRISPRi (off)
+    if (!effector.active && now - lastEventTime > eventInterval) {
+      effector.active = true;
+      effector.startTime = now;
+      effector.seeded = false;
+      effector.t = 0.25 + Math.random() * 0.5;
+      effector.mode = (eventCount % 2 === 0) ? 'activate' : 'repress';
+      eventCount++;
+      lastEventTime = now;
+      eventInterval = 4200 + Math.random() * 2600;
     }
 
-    // Draw Cas9
-    if (cas9.active) {
-      const elapsed = now - cas9.startTime;
-      const posA = getHelixPoint(cas9.t, phase, 'A');
-      const posB = getHelixPoint(cas9.t, phase, 'B');
-      const targetX = (posA.x + posB.x) / 2;
-      const targetY = (posA.y + posB.y) / 2;
+    // dCas9 effector: approach -> dock (bind, no cut) -> release
+    if (effector.active) {
+      const elapsed = now - effector.startTime;
+      const posA = getHelixPoint(effector.t, phase, 'A');
+      const posB = getHelixPoint(effector.t, phase, 'B');
+      const cx = (posA.x + posB.x) / 2;
+      const cy = (posA.y + posB.y) / 2;
+      const body = config.colors.effector;
+      const ec = effector.mode === 'activate' ? config.colors.activate : config.colors.repress;
 
-      let x, y, opacity, size;
-
-      if (elapsed < 1200) {
+      let x, y, opacity;
+      if (elapsed < 1100) {
         // Approach
-        const p = elapsed / 1200;
+        const p = elapsed / 1100;
         const eased = 1 - Math.pow(1 - p, 3);
-        x = targetX - 150 * (1 - eased);
-        y = targetY - 100 * (1 - eased);
+        x = cx - 140 * (1 - eased);
+        y = cy - 92 * (1 - eased);
         opacity = p;
-        size = 20 + p * 10;
-      } else if (elapsed < 1800) {
-        // Cut
-        const p = (elapsed - 1200) / 600;
-        x = targetX;
-        y = targetY;
-        opacity = 1;
-        size = 30 + Math.sin(p * Math.PI) * 20;
-
-        // Flash
-        const flashAlpha = Math.sin(p * Math.PI) * 0.6;
-        const flashGradient = ctx.createRadialGradient(x, y, 0, x, y, 60);
-        flashGradient.addColorStop(0, `rgba(251, 191, 36, ${flashAlpha})`);
-        flashGradient.addColorStop(0.5, `rgba(251, 191, 36, ${flashAlpha * 0.3})`);
-        flashGradient.addColorStop(1, 'rgba(251, 191, 36, 0)');
-        ctx.beginPath();
-        ctx.arc(x, y, 60, 0, Math.PI * 2);
-        ctx.fillStyle = flashGradient;
-        ctx.fill();
-
-      } else if (elapsed < 2600) {
-        // Leave
-        const p = (elapsed - 1800) / 800;
-        x = targetX + 120 * p;
-        y = targetY + 80 * p;
+      } else if (elapsed < 2400) {
+        // Docked (bound to target) — seed the regulated region so it blooms under the protein
+        x = cx; y = cy; opacity = 1;
+        if (!effector.seeded) {
+          regions.push({ t: effector.t, mode: effector.mode, startTime: now, life: 5200, peak: 1, strength: 0, span: 0.05 });
+          effector.seeded = true;
+        }
+      } else if (elapsed < 3200) {
+        // Release
+        const p = (elapsed - 2400) / 800;
+        x = cx + 128 * p;
+        y = cy + 80 * p;
         opacity = 1 - p;
-        size = 30 - p * 10;
       } else {
-        cas9.active = false;
-        mutations.push({ t: cas9.t, startTime: now });
-        x = targetX;
-        y = targetY;
+        effector.active = false;
         opacity = 0;
-        size = 20;
       }
 
-      if (cas9.active && opacity > 0) {
-        const c = config.colors.cas9;
-
-        // Cas9 glow
-        const gradient = ctx.createRadialGradient(x, y, 0, x, y, size * 1.5);
-        gradient.addColorStop(0, `rgba(${c.r}, ${c.g}, ${c.b}, ${opacity * 0.8})`);
-        gradient.addColorStop(0.6, `rgba(${c.r}, ${c.g}, ${c.b}, ${opacity * 0.3})`);
-        gradient.addColorStop(1, `rgba(${c.r}, ${c.g}, ${c.b}, 0)`);
-
+      if (effector.active && opacity > 0) {
+        // Binding halo, tinted by mode (green = activate, grey = repress)
+        const halo = ctx.createRadialGradient(x, y, 0, x, y, 34);
+        halo.addColorStop(0, `rgba(${ec.r}, ${ec.g}, ${ec.b}, ${opacity * 0.5})`);
+        halo.addColorStop(0.6, `rgba(${ec.r}, ${ec.g}, ${ec.b}, ${opacity * 0.18})`);
+        halo.addColorStop(1, `rgba(${ec.r}, ${ec.g}, ${ec.b}, 0)`);
         ctx.beginPath();
-        ctx.arc(x, y, size * 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
+        ctx.arc(x, y, 34, 0, Math.PI * 2);
+        ctx.fillStyle = halo;
         ctx.fill();
 
-        // Cas9 body
+        // dCas9 protein body — rounded and neutral, clearly docking rather than cutting
         ctx.beginPath();
-        ctx.ellipse(x, y, size * 0.8, size * 0.5, 0, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(30, 41, 59, ${opacity * 0.3})`;
+        ctx.ellipse(x, y, 17, 12, 0, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${body.r}, ${body.g}, ${body.b}, ${opacity * 0.85})`;
         ctx.fill();
-        ctx.strokeStyle = `rgba(${c.r}, ${c.g}, ${c.b}, ${opacity * 0.6})`;
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = `rgba(${ec.r}, ${ec.g}, ${ec.b}, ${opacity * 0.7})`;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        // Guide RNA
+        // Guide RNA threading back toward the bound site
         ctx.beginPath();
-        ctx.moveTo(x + size * 0.5, y);
-        ctx.quadraticCurveTo(x + size, y - size * 0.3, x + size * 1.2, y - size * 0.5);
-        ctx.strokeStyle = `rgba(34, 197, 94, ${opacity * 0.5})`;
-        ctx.lineWidth = 2;
+        ctx.moveTo(x, y);
+        ctx.quadraticCurveTo(x + 15, y - 11, x + 25, y - 21);
+        ctx.strokeStyle = `rgba(${config.colors.rung.r}, ${config.colors.rung.g}, ${config.colors.rung.b}, ${opacity * 0.5})`;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
       }
     }
