@@ -1,6 +1,6 @@
 title: Gilbert Lab
 description: CRISPR epigenome engineering, functional genomics, and cancer biology research at UCSF and Arc Institute
-url: https://gilbertlab.ucsf.edu
+url: https://gilbertlabucsf.github.io   # canonical live domain (update here if a custom domain is added)
 
 # Files/folders kept out of the built site
 exclude:
