@@ -9,7 +9,6 @@ intro: >-
 areas:
   - title: Epigenome Engineering
     icon: helix
-    flagship: true
     description: We build and refine CRISPR tools — CRISPRi, CRISPRa, and CRISPRoff/CRISPRon — to switch genes on and off and write heritable epigenetic memory, all without cutting DNA.
   - title: New CRISPR Systems
     icon: nodes

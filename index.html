@@ -80,11 +80,7 @@
       <p class="research-intro fade-in">{{ site.data.research.intro }}</p>
       <div class="research-grid fade-in" id="research-grid">
         {% for area in site.data.research.areas %}
-        <div class="research-card{% if area.flagship %} research-card--flagship{% endif %}">
-          {% if area.flagship %}
-          <canvas class="flagship-particles" aria-hidden="true"></canvas>
-          <p class="flagship-eyebrow">Flagship</p>
-          {% endif %}
+        <div class="research-card">
           <div class="research-card-head">
             <div class="research-icon" aria-hidden="true">{% include research-icons.html icon=area.icon %}</div>
             <h3>{{ area.title }}</h3>

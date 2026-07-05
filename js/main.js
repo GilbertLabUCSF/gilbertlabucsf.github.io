@@ -727,60 +727,6 @@ function initPublications() {
 }
 
 // ============================================
-// FLAGSHIP CARD PARTICLES
-// ============================================
-// A faint, static scatter of the hero's green/teal particles inside the
-// flagship research card. Seeded so positions are stable across reloads.
-function initFlagshipParticles() {
-  const canvas = document.querySelector('.flagship-particles');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const card = canvas.parentElement;
-  const rng = makeRng(20140929);
-
-  const dots = [];
-  for (let i = 0; i < 26; i++) {
-    dots.push({
-      x: rng(),
-      y: rng(),
-      r: 1 + rng() * 2.4,
-      a: 0.12 + rng() * 0.26,
-      c: HERO_GREENS[Math.floor(rng() * HERO_GREENS.length)],
-    });
-  }
-
-  function draw() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = card.offsetWidth;
-    const h = card.offsetHeight;
-    if (!w || !h) return;
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, w, h);
-    dots.forEach((d) => {
-      const x = d.x * w;
-      const y = d.y * h;
-      const [r, g, b] = d.c;
-      const glow = ctx.createRadialGradient(x, y, 0, x, y, d.r * 3);
-      glow.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${d.a})`);
-      glow.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-      ctx.beginPath();
-      ctx.arc(x, y, d.r * 3, 0, Math.PI * 2);
-      ctx.fillStyle = glow;
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(x, y, d.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${d.a})`;
-      ctx.fill();
-    });
-  }
-
-  draw();
-  window.addEventListener('resize', draw);
-}
-
-// ============================================
 // INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -791,7 +737,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSectionRail();
   initSmoothScroll();
   initEventsCarousel();
-  initFlagshipParticles();
   initPublications();
   initSectionParticles();
 });
