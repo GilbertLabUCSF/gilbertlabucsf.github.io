@@ -469,6 +469,7 @@ function initEventsCarousel() {
   if (!carousel) return;
 
   const track = carousel.querySelector('.carousel-track');
+  const viewport = carousel.querySelector('.carousel-viewport');
   const slides = Array.from(track?.querySelectorAll('.event-slide') || []);
   const prev = carousel.querySelector('.carousel-btn.prev');
   const next = carousel.querySelector('.carousel-btn.next');
@@ -493,6 +494,14 @@ function initEventsCarousel() {
     next.disabled = currentIndex >= slides.length - 1;
   }
 
+  // Show an edge fade only where a card is actually clipped off-screen
+  function updateFades() {
+    if (!viewport) return;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    viewport.classList.toggle('show-left', track.scrollLeft > 4);
+    viewport.classList.toggle('show-right', track.scrollLeft < maxScroll - 4);
+  }
+
   function updateDots() {
     if (!dots) return;
     const dotButtons = Array.from(dots.querySelectorAll('button'));
@@ -508,6 +517,7 @@ function initEventsCarousel() {
     currentIndex = clamped;
     updateButtons();
     updateDots();
+    updateFades();
   }
 
   if (dots) {
@@ -532,6 +542,7 @@ function initEventsCarousel() {
         updateButtons();
         updateDots();
       }
+      updateFades();
     });
   }
 
@@ -542,6 +553,7 @@ function initEventsCarousel() {
 
   updateButtons();
   updateDots();
+  updateFades();
 }
 
 // ============================================
