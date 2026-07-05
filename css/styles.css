@@ -1243,6 +1243,30 @@ footer {
    Redesign layer — editorial "manuscript" details
    ============================================ */
 
+/* Section-divider particle motif — a whisper of the hero's green/teal
+   drifting across the top of each section, behind the NN / LABEL eyebrow */
+section {
+  position: relative;
+}
+
+.section-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.section-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 140px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.75;
+  -webkit-mask-image: linear-gradient(to bottom, #000 25%, transparent);
+  mask-image: linear-gradient(to bottom, #000 25%, transparent);
+}
+
 /* Numbered section eyebrows: 01 / Research, 02 / Team ... */
 body {
   counter-reset: section;

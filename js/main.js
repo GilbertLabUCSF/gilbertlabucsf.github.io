@@ -545,6 +545,105 @@ function initEventsCarousel() {
 }
 
 // ============================================
+// SECTION-DIVIDER PARTICLE MOTIF
+// ============================================
+// A thin, sparse band of the hero's green/teal particles drifting on a gentle
+// diagonal at the top of each labeled section. Decorative and low-opacity;
+// injected so it degrades to nothing without JS. One shared rAF loop draws
+// only the bands currently on screen. Reduced motion → a single static draw.
+function initSectionParticles() {
+  const sections = Array.from(document.querySelectorAll('section'))
+    .filter((s) => s.querySelector('.section-label'));
+  if (!sections.length) return;
+
+  const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+
+  const bands = sections.map((section, i) => {
+    const canvas = document.createElement('canvas');
+    canvas.className = 'section-particles';
+    canvas.setAttribute('aria-hidden', 'true');
+    section.insertBefore(canvas, section.firstChild);
+    const ctx = canvas.getContext('2d');
+
+    const rng = makeRng(9973 + i * 101);
+    const dots = [];
+    for (let j = 0; j < 22; j++) {
+      dots.push({
+        x: rng(),
+        y: rng(),
+        r: 0.8 + rng() * 1.7,
+        a: 0.08 + rng() * 0.2,
+        c: HERO_GREENS[Math.floor(rng() * HERO_GREENS.length)],
+      });
+    }
+
+    const band = { canvas, ctx, dots, visible: false, w: 0, h: 0 };
+    band.resize = function () {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      band.w = canvas.offsetWidth;
+      band.h = canvas.offsetHeight;
+      canvas.width = Math.round(band.w * dpr);
+      canvas.height = Math.round(band.h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    band.resize();
+    return band;
+  });
+
+  function drawBand(band, t) {
+    const { ctx, w, h, dots } = band;
+    if (!w || !h) return;
+    ctx.clearRect(0, 0, w, h);
+    const offX = (t / 45000) % 1;   // ~45s to cross horizontally
+    const offY = (t / 120000) % 1;  // slower → a shallow diagonal drift
+    dots.forEach((d) => {
+      const x = (((d.x + offX) % 1) + 1) % 1 * w;
+      const y = (((d.y + offY) % 1) + 1) % 1 * h;
+      const [r, g, b] = d.c;
+      ctx.beginPath();
+      ctx.arc(x, y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${d.a})`;
+      ctx.fill();
+    });
+  }
+
+  window.addEventListener('resize', () => bands.forEach((b) => b.resize()));
+
+  if (prefersReduced) {
+    bands.forEach((b) => drawBand(b, 0));
+    return;
+  }
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const band = bands.find((b) => b.canvas === e.target);
+        if (band) band.visible = e.isIntersecting;
+      });
+    }, { threshold: 0 });
+    bands.forEach((b) => io.observe(b.canvas));
+  } else {
+    bands.forEach((b) => (b.visible = true));
+  }
+
+  let raf = null;
+  function loop(now) {
+    bands.forEach((b) => { if (b.visible) drawBand(b, now); });
+    raf = requestAnimationFrame(loop);
+  }
+  raf = requestAnimationFrame(loop);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (raf) cancelAnimationFrame(raf);
+      raf = null;
+    } else if (!raf) {
+      raf = requestAnimationFrame(loop);
+    }
+  });
+}
+
+// ============================================
 // PUBLICATIONS — tap to expand (touch/click)
 // ============================================
 // Hover and keyboard focus reveal the row via CSS; this handles the explicit
@@ -626,4 +725,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initEventsCarousel();
   initFlagshipParticles();
   initPublications();
+  initSectionParticles();
 });
