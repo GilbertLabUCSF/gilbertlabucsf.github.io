@@ -449,12 +449,15 @@ section {
   object-fit: cover;
   border-radius: 12px;
   border: 1px solid var(--gray-200);
-  filter: grayscale(20%);
+  background: var(--gray-100);
+  /* Same unifying wash as the member grid so the whole team reads as a set */
+  filter: grayscale(38%) contrast(1.03) brightness(1.02) sepia(8%);
   transition: filter 0.4s ease;
+  box-shadow: inset 0 0 0 1px rgba(26, 23, 20, 0.04);
 }
 
 .pi-card:hover .pi-photo {
-  filter: grayscale(0%);
+  filter: none;
 }
 
 .pi-info h3 {
@@ -530,15 +533,18 @@ section {
   border-radius: 12px;
   object-fit: cover;
   margin: 0 auto calc(var(--space-unit) * 1.5);
-  filter: grayscale(30%);
+  background: var(--gray-100);
+  /* Consistent warm, lightly-desaturated wash unifies varied exposures/tones */
+  filter: grayscale(38%) contrast(1.03) brightness(1.02) sepia(8%);
   transition: all 0.3s ease;
   border: 1px solid var(--gray-200);
+  box-shadow: inset 0 0 0 1px rgba(26, 23, 20, 0.04);
 }
 
 .member:hover .member-photo {
-  filter: grayscale(0%);
+  filter: none;
   transform: scale(1.05);
-  border-color: var(--gray-400);
+  border-color: rgba(22, 163, 74, 0.45);
 }
 
 .member-name {
@@ -1482,6 +1488,9 @@ body {
   .pub-item:hover .pub-toggle,
   .pub-item:focus-within .pub-toggle,
   .pub-item.is-open .pub-toggle {
+    transform: none;
+  }
+  .member:hover .member-photo {
     transform: none;
   }
 }
