@@ -66,7 +66,7 @@ function initDNABackground() {
       strandA: { r: 22, g: 163, b: 74 },   // Green
       strandB: { r: 20, g: 184, b: 166 },  // Teal
       rung: { r: 34, g: 197, b: 94 },      // Light green
-      effector: { r: 71, g: 85, b: 105 },  // Slate — dCas9 protein body (binds, never cuts)
+      effector: { r: 120, g: 122, b: 114 },  // Muted warm gray — dCas9 body, softened so it no longer reads as a lavender dot against the green
       activate: { r: 34, g: 197, b: 94 },  // Green — CRISPRa, gene turned ON
       repress: { r: 120, g: 130, b: 140 }  // Cool grey — CRISPRi, gene turned OFF
     }
@@ -349,10 +349,11 @@ function initDNABackground() {
         ctx.fillStyle = halo;
         ctx.fill();
 
-        // dCas9 protein body — rounded and neutral, clearly docking rather than cutting
+        // dCas9 protein body — rounded and neutral, clearly docking rather than cutting.
+        // Kept quiet (lower opacity) so it reads as a soft presence, not a stray dot.
         ctx.beginPath();
-        ctx.ellipse(x, y, 17, 12, 0, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${body.r}, ${body.g}, ${body.b}, ${opacity * 0.85})`;
+        ctx.ellipse(x, y, 16, 11, 0, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${body.r}, ${body.g}, ${body.b}, ${opacity * 0.62})`;
         ctx.fill();
         ctx.strokeStyle = `rgba(${ec.r}, ${ec.g}, ${ec.b}, ${opacity * 0.7})`;
         ctx.lineWidth = 1.5;
