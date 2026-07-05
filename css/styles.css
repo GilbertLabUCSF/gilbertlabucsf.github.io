@@ -597,17 +597,21 @@ section {
   display: grid;
   grid-template-columns: 60px 1fr auto;
   gap: calc(var(--space-unit) * 3);
-  padding: calc(var(--space-unit) * 3) 0;
+  padding: calc(var(--space-unit) * 3) calc(var(--space-unit) * 2);
+  margin: 0 calc(var(--space-unit) * -2);
   border-bottom: 1px solid var(--gray-200);
-  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+  border-radius: 4px;
+  transition: background 0.3s var(--ease-out-expo), border-left-color 0.3s var(--ease-out-expo);
 }
 
-.pub-item:hover {
-  background: var(--gray-50);
-  padding-left: calc(var(--space-unit) * 2);
-  margin-left: calc(var(--space-unit) * -2);
-  padding-right: calc(var(--space-unit) * 2);
-  margin-right: calc(var(--space-unit) * -2);
+/* Reveal on hover, keyboard focus, or tap (.is-open): warm the row with a
+   green left rail + light green background */
+.pub-item:hover,
+.pub-item:focus-within,
+.pub-item.is-open {
+  background: rgba(22, 163, 74, 0.06);
+  border-left-color: var(--accent-green);
 }
 
 .pub-year {
@@ -616,15 +620,32 @@ section {
   color: var(--gray-500);
 }
 
-.pub-title {
+.pub-body {
+  min-width: 0;
+}
+
+a.pub-title {
+  display: inline-block;
   font-size: 1rem;
   line-height: 1.4;
-  margin-bottom: calc(var(--space-unit) * 1);
+  color: var(--gray-900);
+  transition: color 0.2s var(--ease-out-expo);
+}
+
+a.pub-title:hover {
+  color: var(--accent-green);
+}
+
+a.pub-title:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 .pub-meta {
   font-size: 0.85rem;
   color: var(--gray-500);
+  margin-top: 4px;
 }
 
 .pub-meta em {
@@ -632,16 +653,90 @@ section {
   color: var(--accent);
 }
 
-.pub-arrow {
-  font-size: 1rem;
-  color: var(--gray-300);
-  transition: all 0.2s ease;
-  align-self: center;
+/* Collapsed by default; expands via the 0fr -> 1fr grid-rows technique */
+.pub-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin-top: 0;
+  transition: grid-template-rows 0.35s var(--ease-out-expo),
+              opacity 0.3s var(--ease-out-expo),
+              margin-top 0.3s var(--ease-out-expo);
 }
 
-.pub-item:hover .pub-arrow {
-  color: var(--black);
-  transform: translateX(4px);
+.pub-reveal-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.pub-item:hover .pub-reveal,
+.pub-item:focus-within .pub-reveal,
+.pub-item.is-open .pub-reveal {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: calc(var(--space-unit) * 1.5);
+}
+
+.pub-takeaway {
+  font-size: 0.9rem;
+  color: var(--gray-700);
+  line-height: 1.55;
+  max-width: 62ch;
+}
+
+.pub-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--space-unit) * 1.5);
+  margin-top: calc(var(--space-unit) * 1.5);
+}
+
+.pub-links a {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-green);
+  border: 1px solid rgba(22, 163, 74, 0.4);
+  padding: 5px 12px;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.pub-links a:hover {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: #fff;
+}
+
+.pub-links a:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 2px;
+}
+
+.pub-toggle {
+  align-self: center;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  color: var(--gray-500);
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: color 0.2s ease, transform 0.3s var(--ease-out-expo);
+}
+
+.pub-item:hover .pub-toggle,
+.pub-item:focus-within .pub-toggle,
+.pub-item.is-open .pub-toggle {
+  color: var(--accent-green);
+  transform: rotate(90deg);
+}
+
+.pub-toggle:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 2px;
 }
 
 /* Events Section - Photo Gallery */
@@ -1042,16 +1137,13 @@ footer {
   }
 
   .pub-item {
-    grid-template-columns: 1fr;
-    gap: calc(var(--space-unit) * 1);
+    grid-template-columns: 1fr auto;
+    gap: calc(var(--space-unit) * 1) calc(var(--space-unit) * 2);
   }
 
   .pub-year {
+    grid-column: 1 / -1;
     font-size: 0.75rem;
-  }
-
-  .pub-arrow {
-    display: none;
   }
 }
 
@@ -1216,9 +1308,18 @@ body {
   }
 }
 
-/* Reduced motion — no card lift */
+/* Reduced motion — no card lift, no animated reveal/rotation */
 @media (prefers-reduced-motion: reduce) {
   .research-card:hover {
+    transform: none;
+  }
+  .pub-reveal,
+  .pub-toggle {
+    transition: none;
+  }
+  .pub-item:hover .pub-toggle,
+  .pub-item:focus-within .pub-toggle,
+  .pub-item.is-open .pub-toggle {
     transform: none;
   }
 }

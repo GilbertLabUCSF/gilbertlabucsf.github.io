@@ -545,6 +545,22 @@ function initEventsCarousel() {
 }
 
 // ============================================
+// PUBLICATIONS — tap to expand (touch/click)
+// ============================================
+// Hover and keyboard focus reveal the row via CSS; this handles the explicit
+// toggle, which is the only path on touch devices with no hover.
+function initPublications() {
+  document.querySelectorAll('.pub-item').forEach((item) => {
+    const toggle = item.querySelector('.pub-toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', () => {
+      const open = item.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+}
+
+// ============================================
 // FLAGSHIP CARD PARTICLES
 // ============================================
 // A faint, static scatter of the hero's green/teal particles inside the
@@ -609,4 +625,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initEventsCarousel();
   initFlagshipParticles();
+  initPublications();
 });

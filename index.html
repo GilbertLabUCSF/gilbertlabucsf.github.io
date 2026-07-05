@@ -161,14 +161,23 @@
 
       <div class="pub-list" id="publications-list">
         {% for pub in site.data.publications %}
-        <a href="{{ pub.url }}" target="_blank" rel="noopener" class="pub-item fade-in">
+        <div class="pub-item fade-in">
           <div class="pub-year">{{ pub.year }}</div>
-          <div>
-            <div class="pub-title">{{ pub.title }}</div>
+          <div class="pub-body">
+            <a class="pub-title" href="{{ pub.url }}" target="_blank" rel="noopener">{{ pub.title }}</a>
             <div class="pub-meta">{{ pub.authors }} · <em>{{ pub.journal }}</em></div>
+            <div class="pub-reveal">
+              <div class="pub-reveal-inner">
+                {% if pub.takeaway %}<p class="pub-takeaway">{{ pub.takeaway }}</p>{% endif %}
+                <div class="pub-links">
+                  <a href="{{ pub.url }}" target="_blank" rel="noopener">DOI ↗</a>
+                  {% if pub.pmc %}<a href="{{ pub.pmc }}" target="_blank" rel="noopener">Full text ↗</a>{% endif %}
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="pub-arrow">→</div>
-        </a>
+          <button class="pub-toggle" type="button" aria-expanded="false" aria-label="Show summary for {{ pub.title }}">→</button>
+        </div>
         {% endfor %}
       </div>
     </div>

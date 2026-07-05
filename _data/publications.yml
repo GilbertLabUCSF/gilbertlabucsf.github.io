@@ -1,26 +1,52 @@
-# Selected publications, newest first. `url` is the DOI or PubMed link.
+# Selected publications, newest first.
+#   url      — canonical DOI link (primary; opens the paper)
+#   pmc      — free full text on PubMed Central, when available
+#   takeaway — one-line plain-language summary drafted from the paper's abstract
 - year: 2025
   title: Integrated epigenetic and genetic programming of primary human T cells
   authors: Goudy L et al.
   journal: Nature Biotechnology
   url: https://doi.org/10.1038/s41587-025-02856-w
+  takeaway: >-
+    An all-RNA CRISPRoff/CRISPRon platform durably switches genes off and on in
+    primary human T cells without cutting DNA — improving engineered CAR-T cells.
 - year: 2025
   title: PTGES3 as a direct modulator of androgen receptor function
   authors: Li H et al.
   journal: Nature Genetics
   url: https://doi.org/10.1038/s41588-025-02388-8
+  pmc: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12695660/
+  takeaway: >-
+    A genome-scale CRISPRi screen pinpoints PTGES3 as a direct regulator of
+    androgen-receptor stability and a candidate drug target in therapy-resistant
+    prostate cancer.
 - year: 2025
   title: Engineered Cas12a for combinatorial chromatin perturbations
   authors: Hsiung CCS et al.
   journal: Nature Biotechnology
   url: https://doi.org/10.1038/s41587-024-02224-0
+  pmc: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11919711/
+  takeaway: >-
+    An engineered Cas12a lets a single cell silence up to six genomic sites at
+    once, enabling higher-order combinatorial CRISPRi screens of regulatory
+    elements.
 - year: 2021
   title: Genome-wide programmable transcriptional memory (CRISPRoff)
   authors: Nuñez JK et al.
   journal: Cell
-  url: https://pubmed.ncbi.nlm.nih.gov/33838111/
+  url: https://doi.org/10.1016/j.cell.2021.03.025
+  pmc: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8376083/
+  takeaway: >-
+    CRISPRoff — a single dead-Cas9 fusion that writes DNA methylation and
+    repressive marks — creates heritable gene silencing from a transient pulse,
+    maintained through cell division and differentiation.
 - year: 2014
   title: Genome-scale CRISPR control of gene repression and activation
   authors: Gilbert LA et al.
   journal: Cell
-  url: https://pubmed.ncbi.nlm.nih.gov/25307932/
+  url: https://doi.org/10.1016/j.cell.2014.09.029
+  pmc: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4253859/
+  takeaway: >-
+    The foundational work establishing CRISPRi and CRISPRa: catalytically dead
+    Cas9 represses or activates endogenous genes across a ~1,000-fold range,
+    genome-wide.
