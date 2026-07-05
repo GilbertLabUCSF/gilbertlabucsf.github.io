@@ -1,6 +1,7 @@
-# Lab alumni. One schema for all: `current` = where they are now (Role, Org);
-# `linkedin` adds a link on the name. Keep it consistent — if you add dated
-# tenure ranges, add them for everyone, not just some.
+# Lab alumni. One schema for all: `current` = where they are now (Role, Org).
+# Add a link on the name with `linkedin:` (preferred) or `url:` (e.g. a faculty
+# or lab page). Keep it consistent — if you add dated tenure ranges, add them
+# for everyone, not just some.
 - name: Aidan Winters
   current: Scientist II, Neptune Bio
   linkedin: https://www.linkedin.com/in/aidanwinters
@@ -35,6 +36,7 @@
   current: MD/PhD Student (MSTP), UCSF
 - name: John Liu
   current: Assistant Professor, UCSF
+  url: https://liulab.ucsf.edu/
 - name: Laine Goudy
   current: Scientist, Xaira Therapeutics
   linkedin: https://www.linkedin.com/in/laine-goudy-157271112

@@ -240,7 +240,8 @@
       <div class="alumni-grid fade-in" id="alumni-grid">
         {% for a in site.data.alumni %}
         <div class="alumni-item">
-          <div class="alumni-name">{% if a.linkedin %}<a href="{{ a.linkedin }}" target="_blank" rel="noopener">{{ a.name }} ↗</a>{% else %}{{ a.name }}{% endif %}</div>
+          {% assign a_link = a.linkedin | default: a.url %}
+          <div class="alumni-name">{% if a_link %}<a href="{{ a_link }}" target="_blank" rel="noopener">{{ a.name }} ↗</a>{% else %}{{ a.name }}{% endif %}</div>
           {% if a.current %}<div class="alumni-meta">{{ a.current }}</div>{% endif %}
         </div>
         {% endfor %}
