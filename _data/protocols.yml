@@ -1,15 +1,53 @@
 # Protocols & resources. Set `external: true` for off-site links (opens in a new tab).
-- title: CRISPR Library Re-amplification
-  description: Protocol for amplifying CRISPR libraries for screening experiments.
-  url: https://weissman.wi.mit.edu/crispr/
+# The CRISPRi/a screening protocols below are hosted by the Weissman Lab
+# (many authored by Luke); `linktext` credits the source. Add lab-authored
+# protocols here as they come online.
+- title: CRISPRi/a Cell Line Generation
+  description: Primer on establishing stable CRISPR interference and activation cell lines.
+  url: https://weissman.wi.mit.edu/crispria_cell_line_primer
   external: true
-  linktext: View protocol →
-- title: CRISPRa/i Screening Protocols
-  description: Comprehensive screening methodologies using CRISPR activation and interference approaches.
+  linktext: Weissman Lab →
+- title: Pooled sgRNA Library Cloning
+  description: Cloning pooled CRISPRi/a sgRNA libraries for genome-scale screens.
+  url: https://weissman.wi.mit.edu/resources/Pooled_CRISPR_Library_Cloning.pdf
+  external: true
+  linktext: Weissman Lab →
+- title: sgRNA Cloning by Annealing
+  description: Annealing-based protocol for cloning individual sgRNAs.
+  url: https://weissman.wi.mit.edu/resources/sgRNACloningProtocol.pdf
+  external: true
+  linktext: Weissman Lab →
+- title: Large-Scale Lentivirus Production
+  description: Producing lentivirus at the scale needed for pooled screening.
+  url: https://weissman.wi.mit.edu/resources/Large_scale_lentivirus_production.pdf
+  external: true
+  linktext: Weissman Lab →
+- title: Screening — Suspension Cells
+  description: Screening guidelines and an example infection protocol for suspension cells.
+  url: https://weissman.wi.mit.edu/resources/Infection_and_Screening_Suspension_Cells.pdf
+  external: true
+  linktext: Weissman Lab →
+- title: Screening — Adherent Cells
+  description: Screening guidelines and an example infection protocol for adherent cells.
+  url: https://weissman.wi.mit.edu/resources/Infection_and_screening_adherent_cells.pdf
+  external: true
+  linktext: Weissman Lab →
+- title: Illumina Sample Prep After a Screen
+  description: Preparing Illumina sequencing samples following a pooled CRISPR screen.
+  url: https://weissman.wi.mit.edu/resources/IlluminaSequencingSamplePrep.pdf
+  external: true
+  linktext: Weissman Lab →
+- title: ScreenProcessing Pipeline
+  description: Analysis pipeline for pooled CRISPRi/a screens (Horlbeck et al.).
+  url: https://github.com/mhorlbeck/ScreenProcessing
+  external: true
+  linktext: GitHub →
+- title: All Screening Resources
+  description: Full index of Weissman Lab CRISPRi/a protocols, adapter sequences, and templates.
   url: https://weissman.wi.mit.edu/crispr/
   external: true
   linktext: Weissman Lab →
-- title: GitHub Repository
+- title: Gilbert Lab GitHub
   description: Code, tools, and computational resources from the Gilbert Lab.
   url: https://github.com/GilbertLabUCSF
   external: true
