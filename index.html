@@ -241,9 +241,7 @@
         {% for a in site.data.alumni %}
         <div class="alumni-item">
           <div class="alumni-name">{% if a.linkedin %}<a href="{{ a.linkedin }}" target="_blank" rel="noopener">{{ a.name }} ↗</a>{% else %}{{ a.name }}{% endif %}</div>
-          {% if a.years and a.current %}<div class="alumni-meta">{{ a.years }} · {{ a.current }}</div>
-          {% elsif a.current %}<div class="alumni-meta">{{ a.current }}</div>
-          {% elsif a.years %}<div class="alumni-meta">{{ a.years }}</div>{% endif %}
+          {% if a.current %}<div class="alumni-meta">{{ a.current }}</div>{% endif %}
         </div>
         {% endfor %}
       </div>
