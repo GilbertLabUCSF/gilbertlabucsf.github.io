@@ -545,6 +545,60 @@ function initEventsCarousel() {
 }
 
 // ============================================
+// STICKY SECTION INDEX RAIL (desktop)
+// ============================================
+// Build a fixed 01–07 rail from the labeled sections. It highlights the
+// section nearest the vertical center of the viewport and jumps on click.
+// CSS hides it on mobile; without JS it simply never appears.
+function initSectionRail() {
+  const sections = Array.from(document.querySelectorAll('section'))
+    .filter((s) => s.id && s.querySelector('.section-label'));
+  if (sections.length < 2) return;
+
+  const nav = document.createElement('nav');
+  nav.className = 'section-rail';
+  nav.setAttribute('aria-label', 'Section index');
+  const ol = document.createElement('ol');
+  const links = new Map();
+
+  sections.forEach((section, i) => {
+    const num = String(i + 1).padStart(2, '0');
+    const label = (section.querySelector('.section-label')?.textContent || section.id).trim();
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#' + section.id;
+    a.innerHTML = `<span class="rail-num">${num}</span><span class="rail-label">${label}</span>`;
+    li.appendChild(a);
+    ol.appendChild(li);
+    links.set(section.id, a);
+  });
+
+  nav.appendChild(ol);
+  document.body.appendChild(nav);
+
+  // Track which sections cross a thin band near the vertical center; the
+  // topmost one in document order wins so exactly one link is active.
+  const visible = new Set();
+  function setActive() {
+    let activeId = null;
+    for (const section of sections) {
+      if (visible.has(section.id)) { activeId = section.id; break; }
+    }
+    links.forEach((a, id) => a.classList.toggle('active', id === activeId));
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) visible.add(e.target.id);
+      else visible.delete(e.target.id);
+    });
+    setActive();
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+  sections.forEach((s) => io.observe(s));
+}
+
+// ============================================
 // SECTION-DIVIDER PARTICLE MOTIF
 // ============================================
 // A thin, sparse band of the hero's green/teal particles drifting on a gentle
@@ -721,6 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initMobileMenu();
   initScrollAnimations();
+  initSectionRail();
   initSmoothScroll();
   initEventsCarousel();
   initFlagshipParticles();

@@ -1267,6 +1267,101 @@ section {
   mask-image: linear-gradient(to bottom, #000 25%, transparent);
 }
 
+/* Sticky section index — a fixed 01–07 rail that tracks scroll (desktop only) */
+.section-rail {
+  position: fixed;
+  top: 50%;
+  left: calc(var(--space-unit) * 3.5);
+  transform: translateY(-50%);
+  z-index: 90;
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .section-rail {
+    display: block;
+  }
+}
+
+.section-rail ol {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.section-rail a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: var(--gray-500);
+  transition: color 0.25s var(--ease-out-expo);
+}
+
+.section-rail a::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+  transition: width 0.25s var(--ease-out-expo), opacity 0.25s var(--ease-out-expo);
+}
+
+.section-rail a:hover {
+  color: var(--gray-700);
+}
+
+.section-rail a.active {
+  color: var(--accent-green);
+}
+
+.section-rail a.active::before {
+  width: 26px;
+  opacity: 1;
+}
+
+.section-rail a:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Section name reveals in a chip on hover/focus so it never overlaps content */
+.rail-label {
+  position: absolute;
+  left: 100%;
+  margin-left: 10px;
+  white-space: nowrap;
+  padding: 3px 9px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  color: var(--gray-700);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  opacity: 0;
+  transform: translateX(-4px);
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease-out-expo), transform 0.2s var(--ease-out-expo);
+}
+
+.section-rail a:hover .rail-label,
+.section-rail a:focus-visible .rail-label {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-rail a::before,
+  .rail-label {
+    transition: none;
+  }
+}
+
 /* Numbered section eyebrows: 01 / Research, 02 / Team ... */
 body {
   counter-reset: section;
