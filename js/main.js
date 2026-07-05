@@ -4,6 +4,24 @@
  * Particle-based DNA helix with Cas9 cutting (Canvas)
  */
 
+// Seeded PRNG (mulberry32) — stable, reproducible particle scatters
+function makeRng(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// The hero's palette, reused for interior green accents
+const HERO_GREENS = [
+  [22, 163, 74],   // green (strand A)
+  [63, 166, 160],  // teal
+  [34, 197, 94],   // light green (rungs)
+];
+
 // ============================================
 // PARTICLE DNA HELIX
 // ============================================
@@ -527,6 +545,60 @@ function initEventsCarousel() {
 }
 
 // ============================================
+// FLAGSHIP CARD PARTICLES
+// ============================================
+// A faint, static scatter of the hero's green/teal particles inside the
+// flagship research card. Seeded so positions are stable across reloads.
+function initFlagshipParticles() {
+  const canvas = document.querySelector('.flagship-particles');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const card = canvas.parentElement;
+  const rng = makeRng(20140929);
+
+  const dots = [];
+  for (let i = 0; i < 26; i++) {
+    dots.push({
+      x: rng(),
+      y: rng(),
+      r: 1 + rng() * 2.4,
+      a: 0.12 + rng() * 0.26,
+      c: HERO_GREENS[Math.floor(rng() * HERO_GREENS.length)],
+    });
+  }
+
+  function draw() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = card.offsetWidth;
+    const h = card.offsetHeight;
+    if (!w || !h) return;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    dots.forEach((d) => {
+      const x = d.x * w;
+      const y = d.y * h;
+      const [r, g, b] = d.c;
+      const glow = ctx.createRadialGradient(x, y, 0, x, y, d.r * 3);
+      glow.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${d.a})`);
+      glow.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+      ctx.beginPath();
+      ctx.arc(x, y, d.r * 3, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(x, y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${d.a})`;
+      ctx.fill();
+    });
+  }
+
+  draw();
+  window.addEventListener('resize', draw);
+}
+
+// ============================================
 // INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -536,4 +608,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initSmoothScroll();
   initEventsCarousel();
+  initFlagshipParticles();
 });

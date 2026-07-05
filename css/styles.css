@@ -372,6 +372,7 @@ section {
 }
 
 .research-card {
+  position: relative;
   padding: calc(var(--space-unit) * 3);
   background: var(--gray-50);
   border: 1px solid var(--gray-200);
@@ -387,26 +388,29 @@ section {
 }
 
 .research-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
   display: grid;
   place-items: center;
   background: var(--gray-100);
   color: var(--gray-900);
   border: 1px solid var(--gray-200);
-  transition: color 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo);
+  transition: color 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo), background 0.3s var(--ease-out-expo);
 }
 
 .research-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
+  stroke-width: 2.25;
 }
 
+/* Green hover — carries the hero's green below the fold */
 .research-card:hover {
-  border-color: var(--gray-400);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border-color: rgba(22, 163, 74, 0.55);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(22, 163, 74, 0.14);
 }
 
 .research-card h3 {
@@ -1158,8 +1162,63 @@ body {
   color: var(--accent);
 }
 
-/* Research icons take the accent on card hover */
+/* Research icons take the hero green on card hover */
 .research-card:hover .research-icon {
-  color: var(--accent);
-  border-color: var(--accent);
+  color: var(--accent-green);
+  border-color: rgba(22, 163, 74, 0.55);
+  background: rgba(22, 163, 74, 0.08);
+}
+
+/* Flagship card — the lab's signature area, tinted with a whisper of the hero */
+.research-card--flagship {
+  grid-column: span 2;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(22, 163, 74, 0.07), rgba(63, 166, 160, 0.04)),
+    var(--gray-50);
+  border-color: rgba(22, 163, 74, 0.28);
+}
+
+.research-card--flagship:hover {
+  border-color: rgba(22, 163, 74, 0.6);
+}
+
+/* Seeded green particle scatter, echoing the hero, behind the content */
+.flagship-particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.research-card--flagship > .research-card-head,
+.research-card--flagship > p,
+.research-card--flagship > .flagship-eyebrow {
+  position: relative;
+  z-index: 1;
+}
+
+.flagship-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-green);
+  margin-bottom: calc(var(--space-unit) * 1.5);
+}
+
+@media (max-width: 600px) {
+  /* Flagship returns to a single column when the grid collapses */
+  .research-card--flagship {
+    grid-column: auto;
+  }
+}
+
+/* Reduced motion — no card lift */
+@media (prefers-reduced-motion: reduce) {
+  .research-card:hover {
+    transform: none;
+  }
 }
