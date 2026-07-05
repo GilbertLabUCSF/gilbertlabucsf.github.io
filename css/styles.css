@@ -13,8 +13,8 @@
   --gray-900: #1a1714;
   --gray-700: #423d35;
   --gray-600: #5c554a;
-  --gray-500: #8a8275;
-  --gray-400: #a89f8e;
+  --gray-500: #736c5e; /* darkened for WCAG AA: ~4.9:1 on paper, ~4.6:1 on gray-50 */
+  --gray-400: #a89f8e; /* borders/decorative only — not used for body text */
   --gray-300: #d8d0c0;
   --gray-200: #e6dfce;
   --gray-100: #efe9db;
@@ -301,19 +301,20 @@ nav.visible {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  color: var(--gray-400);
+  color: var(--gray-500);
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  animation: pulse 2s ease-in-out infinite;
 }
 
+/* Only the decorative line breathes; the word stays at full (AA) contrast */
 .scroll-hint::after {
   content: '';
   width: 1px;
   height: 40px;
   background: linear-gradient(to bottom, var(--gray-400), transparent);
+  animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
