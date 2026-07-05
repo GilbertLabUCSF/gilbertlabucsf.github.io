@@ -3,3 +3,6 @@ _site/
 .jekyll-metadata
 .sass-cache/
 vendor/
+
+# Local-only scratch/notes — drop files here to keep them out of the site
+docs/
